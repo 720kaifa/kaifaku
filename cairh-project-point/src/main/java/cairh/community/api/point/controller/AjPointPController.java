@@ -21,7 +21,7 @@ import cairh.community.api.point.util.Md5Encrypt;
 
 @Controller
 public class AjPointPController { 
-
+    
 	@Autowired
 	private IAjPointService iAjPointService;
 	@Autowired
