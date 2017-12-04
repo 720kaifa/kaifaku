@@ -1,0 +1,12 @@
+.div-hidden{
+    overflow:hidden;
+}
+.div-left{
+    float:left;
+}
+.div-width{
+    width: 145px;
+    margin-right: 20px;
+    text-align:right;
+    line-height: 28px;
+}
