@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<servers>
+    <serverGroup name="xpe" initConn="10" minConn="10" maxConn="10" maxIdle="5000" maxBusyTime="5000"
+                 maintSleep="5000" failover="true" timeout="20000" password="crh123">
+        <!--<server ip="192.168.1.226" port="26379" weight="1"/>-->
+        <!-- <server ip="10.137.35.180" port="26379" weight="1"/> -->
+        <server ip="127.0.0.1" port="26379" weight="1"/>
+    </serverGroup>
+</servers>

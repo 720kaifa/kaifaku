@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+	<settings cacheModelsEnabled="true" lazyLoadingEnabled="true"
+		enhancementEnabled="false" errorTracingEnabled="true" maxSessions="64"
+		maxTransactions="20" maxRequests="128" useStatementNamespaces="true" />
+	<sqlMap  resource="sqlmap/RevenueLog_SqlMap.xml"></sqlMap>
+	<sqlMap  resource="sqlmap/StockPool_SqlMap.xml"></sqlMap>
+	<sqlMap  resource="sqlmap/UserRevenue_SqlMap.xml"></sqlMap>
+	<sqlMap  resource="sqlmap/GameUser_SqlMap.xml"></sqlMap>
+	<sqlMap  resource="sqlmap/MaHistoryRanking_SqlMap.xml"></sqlMap>
+	<sqlMap  resource="sqlmap/MaTodayRanking_SqlMap.xml"></sqlMap>
+	<sqlMap  resource="sqlmap/MaUserPointLog_SqlMap.xml"></sqlMap>
+	<sqlMap  resource="sqlmap/MaUserinfo_SqlMap.xml"></sqlMap>
+</sqlMapConfig>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "sql-map-2.dtd">
+<sqlMap namespace="UserLevel" dataSource="gjzqDataSource">
+    <typeAlias alias="userLevel" type="cairh.community.api.point.model.UserLevel"/>
+   
+    <resultMap id="userLevelResult" class="userLevel">
+        <result property="id" column="ID"/>
+        <result property="starLevel" column="STAR_LEVEL"/>
+        <result property="levelName" column="LEVEL_NAME"/>
+        <result property="pointBegin" column="POINT_BEGIN"/>
+        <result property="pointEnd" column="POINT_END"/>
+        <result property="remark" column="REMARK"/>
+    </resultMap>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="commonColumns">
+	    <![CDATA[
+        	ID ,
+        	STAR_LEVEL ,
+        	LEVEL_NAME ,
+        	POINT_BEGIN ,
+        	POINT_END ,
+        	REMARK 
+	    ]]>
+	</sql>
+	<sql id="dynamicUpdate">
+	  <dynamic prepend=" ">
+	       <isNotNull prepend="," property="starLevel">
+	             STAR_LEVEL = #starLevel#
+	       </isNotNull>
+	       <isNotNull prepend="," property="levelName">
+	             LEVEL_NAME = #levelName#
+	       </isNotNull>
+	       <isNotNull prepend="," property="pointBegin">
+	             POINT_BEGIN = #pointBegin#
+	       </isNotNull>
+	       <isNotNull prepend="," property="pointEnd">
+	             POINT_END = #pointEnd#
+	       </isNotNull>
+	       <isNotNull prepend="," property="remark">
+	             REMARK = #remark#
+	       </isNotNull>
+	    </dynamic>	
+	</sql>
+	
+    <insert id="insert" parameterClass="userLevel">
+    <![CDATA[
+        INSERT INTO T_SQ_USER_LEVEL (
+        	ID ,
+        	STAR_LEVEL ,
+        	LEVEL_NAME ,
+        	POINT_BEGIN ,
+        	POINT_END ,
+        	REMARK 
+        ) VALUES (
+        	#id# ,
+        	#starLevel# ,
+        	#levelName# ,
+        	#pointBegin# ,
+        	#pointEnd# ,
+        	#remark# 
+        )
+    ]]>
+    <!--
+    mysql:		type="post" SELECT  select last_insert_id()
+    sqlserver:	type="post" SELECT  @@identity  AS  ID
+    oracle:		type="pre" 	SELECT  sequenceName.nextval AS ID FROM DUAL
+    DB2:		type="pre"	values nextval for sequenceName
+    -->
+        <selectKey resultClass="java.lang.Long" type="pre" keyProperty="id" >
+            select USER_LEVEL_SEQ.nextVal  from dual
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterClass="userLevel">
+        UPDATE T_SQ_USER_LEVEL SET <include refid="dynamicUpdate"/>
+	   <![CDATA[ WHERE 
+	        ID = #id# 
+    ]]>
+    </update>
+
+    <delete id="delete" parameterClass="java.lang.Long" isKey="true">
+    <![CDATA[
+        delete from T_SQ_USER_LEVEL where
+        ID = #id# 
+    ]]>
+    </delete>
+    
+    <select id="getById" resultMap="userLevelResult" isKey="true">
+	    select <include refid="commonColumns"/>
+	    <![CDATA[ from T_SQ_USER_LEVEL where 
+		        ID = #id# 
+	    ]]>
+    </select>
+
+	<sql id="dynamicWhere">
+	    <dynamic prepend="WHERE">
+	       <isNotEmpty prepend="AND" property="id">
+	             ID = #id#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="starLevel">
+	             STAR_LEVEL = #starLevel#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="levelName">
+	             LEVEL_NAME = #levelName#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="point">
+	             <![CDATA[ POINT_BEGIN <= #point#]]>
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="point">
+	             POINT_END > #point#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="remark">
+	             REMARK = #remark#
+	       </isNotEmpty>
+	    </dynamic>	
+	</sql>
+	
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 #offset#,#pageSize#,#lastRows# 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect_count" resultClass="java.lang.Integer">
+    	<![CDATA[ select count(*) from T_SQ_USER_LEVEL ]]>
+		<include refid="dynamicWhere"/>    
+    </select>
+    <select id="pageSelect" resultMap="userLevelResult">
+    	select <include refid="commonColumns"/>
+	    <![CDATA[ from T_SQ_USER_LEVEL]]>
+		<include refid="dynamicWhere"/>
+		<dynamic prepend="ORDER BY">
+			<isNotEmpty property="sortColumns">$sortColumns$</isNotEmpty>
+		</dynamic>
+    </select>
+
+    <select id="getStart" resultMap="userLevelResult">
+    	select <include refid="commonColumns"/>
+	    <![CDATA[ from T_SQ_USER_LEVEL]]>
+	    where   <![CDATA[ POINT_BEGIN <= #point#]]>
+	          and   POINT_END > #point#
+    </select>
+
+
+</sqlMap>

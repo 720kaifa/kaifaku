@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "sql-map-2.dtd">
+<sqlMap namespace="RevenueLog" dataSource="htsecDataSource">
+    <typeAlias alias="revenueLog" type="cairh.community.api.game.kxian.model.RevenueLog"/>
+   
+    <resultMap id="revenueLogResult" class="revenueLog">
+        <result property="id" column="ID"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="stockCode" column="STOCK_CODE"/>
+        <result property="stockName" column="STOCK_NAME"/>
+        <result property="startTime" column="START_TIME"/>
+        <result property="endTime" column="END_TIME"/>
+        <result property="revenueRate" column="REVENUE_RATE"/>
+        <result property="navRatio" column="NAV_RATIO"/>
+        <result property="createTime" column="CREATE_TIME"/>
+    </resultMap>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="commonColumns">
+	    <![CDATA[
+        	ID ,
+        	USER_ID ,
+        	STOCK_CODE ,
+        	STOCK_NAME ,
+        	START_TIME ,
+        	END_TIME ,
+        	REVENUE_RATE ,
+        	NAV_RATIO ,
+        	CREATE_TIME
+	    ]]>
+	</sql>
+	<sql id="dynamicUpdate">
+	  <dynamic prepend=" ">
+	       <isNotNull prepend="," property="userId">
+	             USER_ID = #userId#
+	       </isNotNull>
+	       <isNotNull prepend="," property="stockCode">
+	             STOCK_CODE = #stockCode#
+	       </isNotNull>
+	       <isNotNull prepend="," property="stockName">
+	             STOCK_NAME = #stockName#
+	       </isNotNull>
+	       <isNotNull prepend="," property="startTime">
+	             START_TIME = #startTime#
+	       </isNotNull>
+	       <isNotNull prepend="," property="endTime">
+	             END_TIME = #endTime#
+	       </isNotNull>
+	       <isNotNull prepend="," property="revenueRate">
+	             REVENUE_RATE = #revenueRate#
+	       </isNotNull>
+	       <isNotNull prepend="," property="navRatio">
+	             NAV_RATIO = #navRatio#
+	       </isNotNull>
+	    </dynamic>	
+	</sql>
+	
+    <insert id="insert" parameterClass="revenueLog">
+    <![CDATA[
+        INSERT INTO MA_REVENUE_LOG (
+        	ID ,
+        	USER_ID ,
+        	STOCK_CODE ,
+        	STOCK_NAME ,
+        	START_TIME ,
+        	END_TIME ,
+        	REVENUE_RATE ,
+        	NAV_RATIO ,
+        	CREATE_TIME
+        ) VALUES (
+        	#id# ,
+        	#userId# ,
+        	#stockCode# ,
+        	#stockName# ,
+        	#startTime# ,
+        	#endTime# ,
+        	#revenueRate# ,
+        	#navRatio# ,
+        	#createTime# 
+        )
+    ]]>
+    <!--
+    mysql:		type="post" SELECT  select last_insert_id()
+    sqlserver:	type="post" SELECT  @@identity  AS  ID
+    oracle:		type="pre" 	SELECT  sequenceName.nextval AS ID FROM DUAL
+    DB2:		type="pre"	values nextval for sequenceName
+    -->
+        <selectKey resultClass="java.lang.Long" type="pre" keyProperty="id" >
+            select REVENUE_LOG_SEQ.nextVal from dual
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterClass="revenueLog">
+        UPDATE MA_REVENUE_LOG SET <include refid="dynamicUpdate"/>
+	   <![CDATA[ WHERE 
+	        ID = #id# 
+    ]]>
+    </update>
+
+    <delete id="delete" parameterClass="java.math.BigDecimal" isKey="true">
+    <![CDATA[
+        delete from MA_REVENUE_LOG where
+        ID = #id# 
+    ]]>
+    </delete>
+    
+    <select id="getById" resultMap="revenueLogResult" isKey="true">
+	    select <include refid="commonColumns"/>
+	    <![CDATA[ from MA_REVENUE_LOG where 
+		        ID = #id# 
+	    ]]>
+    </select>
+
+	<sql id="dynamicWhere">
+	    <dynamic prepend="WHERE">
+	       <isNotEmpty prepend="AND" property="id">
+	             ID = #id#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="userId">
+	             USER_ID = #userId#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="stockCode">
+	             STOCK_CODE = #stockCode#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="stockName">
+	             STOCK_NAME = #stockName#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="startTime">
+	             START_TIME = #startTime#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="endTime">
+	             END_TIME = #endTime#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="revenueRate">
+	             REVENUE_RATE = #revenueRate#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="navRatio">
+	             NAV_RATIO = #navRatio#
+	       </isNotEmpty>
+	    </dynamic>	
+	</sql>
+	
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 #offset#,#pageSize#,#lastRows# 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect_count" resultClass="java.lang.Integer">
+    	<![CDATA[ select count(*) from MA_REVENUE_LOG ]]>
+		<include refid="dynamicWhere"/>    
+    </select>
+    <select id="pageSelect" resultMap="revenueLogResult">
+    	select <include refid="commonColumns"/>
+	    <![CDATA[ from MA_REVENUE_LOG]]>
+		<include refid="dynamicWhere"/>
+		<!-- <dynamic prepend="ORDER BY">
+			<isNotEmpty property="sortColumns">$sortColumns$</isNotEmpty>
+		</dynamic> -->
+    </select>
+
+
+    <select id="getCountByCode" resultClass="java.lang.Integer">
+	    select count(0)
+	    <![CDATA[ from MA_REVENUE_LOG where 
+		        STOCK_CODE = #storkCode# 
+	    ]]>
+    </select>
+    
+    <select id="getCountLessRe" resultClass="java.lang.Integer">
+	   	select count(0)
+	    <![CDATA[ from MA_REVENUE_LOG where 
+		        STOCK_CODE = #storkCode# and REVENUE_RATE <= #revenueRate#
+	    ]]>
+    </select>   
+    
+    <select id="getLogList" resultMap="revenueLogResult">
+     SELECT * FROM ( SELECT A.*, ROWNUM RN FROM ( select
+	    <include refid="commonColumns"/>
+	    from MA_REVENUE_LOG 
+	     <include refid="dynamicWhere" />
+	    order by CREATE_TIME DESC
+	     <![CDATA[  ) A  WHERE ROWNUM < #endRow# ) where RN>#startRow# ]]> 
+    </select>
+    
+    
+   	<select id="countByExample"  resultClass="java.lang.Integer">
+		<![CDATA[ select count(*) from MA_REVENUE_LOG ]]>
+				<include refid="dynamicWhere"/>  
+ 	</select>
+    
+</sqlMap>

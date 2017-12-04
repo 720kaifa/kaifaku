@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "sql-map-2.dtd">
+<sqlMap namespace="AccessoryInfo" dataSource="htsecDataSource">
+    <typeAlias alias="accessoryInfo" type="cairh.community.api.point.model.AccessoryInfo"/>
+   
+    <resultMap id="accessoryInfoResult" class="accessoryInfo">
+        <result property="id" column="ID"/>
+        <result property="accessCode" column="ACCESS_CODE"/>
+        <result property="accesName" column="ACCES_NAME"/>
+        <result property="aesKey" column="AES_KEY"/>
+        <result property="md5Key" column="MD5_KEY"/>
+        <result property="creatTime" column="CREAT_TIME"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="status" column="STATUS"/>
+        <result property="remark" column="REMARK"/>
+    </resultMap>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="commonColumns">
+	    <![CDATA[
+        	ID ,
+        	ACCESS_CODE ,
+        	ACCES_NAME ,
+        	AES_KEY ,
+        	MD5_KEY ,
+        	CREAT_TIME ,
+        	UPDATE_TIME ,
+        	STATUS ,
+        	REMARK 
+	    ]]>
+	</sql>
+	<sql id="dynamicUpdate">
+	  <dynamic prepend=" ">
+	       <isNotNull prepend="," property="accessCode">
+	             ACCESS_CODE = #accessCode#
+	       </isNotNull>
+	       <isNotNull prepend="," property="accesName">
+	             ACCES_NAME = #accesName#
+	       </isNotNull>
+	       <isNotNull prepend="," property="aesKey">
+	             AES_KEY = #aesKey#
+	       </isNotNull>
+	       <isNotNull prepend="," property="md5Key">
+	             MD5_KEY = #md5Key#
+	       </isNotNull>
+	       <isNotNull prepend="," property="creatTime">
+	             CREAT_TIME = #creatTime#
+	       </isNotNull>
+	       <isNotNull prepend="," property="updateTime">
+	             UPDATE_TIME = #updateTime#
+	       </isNotNull>
+	       <isNotNull prepend="," property="status">
+	             STATUS = #status#
+	       </isNotNull>
+	       <isNotNull prepend="," property="remark">
+	             REMARK = #remark#
+	       </isNotNull>
+	    </dynamic>	
+	</sql>
+	
+    <insert id="insert" parameterClass="accessoryInfo">
+    <![CDATA[
+        INSERT INTO T_SQ_ACCESSORY_INFO (
+        	ID ,
+        	ACCESS_CODE ,
+        	ACCES_NAME ,
+        	AES_KEY ,
+        	MD5_KEY ,
+        	CREAT_TIME ,
+        	UPDATE_TIME ,
+        	STATUS ,
+        	REMARK 
+        ) VALUES (
+        	#id# ,
+        	#accessCode# ,
+        	#accesName# ,
+        	#aesKey# ,
+        	#md5Key# ,
+        	#creatTime# ,
+        	#updateTime# ,
+        	#status# ,
+        	#remark# 
+        )
+    ]]>
+    <!--
+    mysql:		type="post" SELECT  select last_insert_id()
+    sqlserver:	type="post" SELECT  @@identity  AS  ID
+    oracle:		type="pre" 	SELECT  sequenceName.nextval AS ID FROM DUAL
+    DB2:		type="pre"	values nextval for sequenceName
+    -->
+        <selectKey resultClass="java.lang.Long" type="pre" keyProperty="id" >
+            select ACCESSORY_INFO_SEQ.nextVal  from dual
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterClass="accessoryInfo">
+        UPDATE T_SQ_ACCESSORY_INFO SET <include refid="dynamicUpdate"/>
+	   <![CDATA[ WHERE 
+	        ID = #id# 
+    ]]>
+    </update>
+
+ 	<update id="updateByCode" parameterClass="java.util.HashMap">
+        UPDATE T_SQ_ACCESSORY_INFO SET STATUS = #status#
+	   <![CDATA[ WHERE 
+	        ACCESS_CODE = #accessCode# 
+    ]]>
+    </update>
+    
+    <delete id="delete" parameterClass="java.lang.Long" isKey="true">
+    <![CDATA[
+        delete from T_SQ_ACCESSORY_INFO where
+        ID = #id# 
+    ]]>
+    </delete>
+    
+    <select id="getById" resultMap="accessoryInfoResult" isKey="true">
+	    select <include refid="commonColumns"/>
+	    <![CDATA[ from T_SQ_ACCESSORY_INFO where 
+		        ID = #id# 
+	    ]]>
+    </select>
+
+	<sql id="dynamicWhere">
+	    <dynamic prepend="WHERE">
+	       <isNotEmpty prepend="AND" property="id">
+	             ID = #id#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="accessCode">
+	             ACCESS_CODE = #accessCode#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="accesName">
+	             ACCES_NAME = #accesName#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="aesKey">
+	             AES_KEY = #aesKey#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="md5Key">
+	             MD5_KEY = #md5Key#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="creatTime">
+	             CREAT_TIME = #creatTime#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="updateTime">
+	             UPDATE_TIME = #updateTime#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="status">
+	             STATUS = #status#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="remark">
+	             REMARK = #remark#
+	       </isNotEmpty>
+	    </dynamic>	
+	</sql>
+	
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 #offset#,#pageSize#,#lastRows# 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect_count" resultClass="java.lang.Integer">
+    	<![CDATA[ select count(*) from T_SQ_ACCESSORY_INFO ]]>
+		<include refid="dynamicWhere"/>    
+    </select>
+    <select id="pageSelect" resultMap="accessoryInfoResult">
+    	select <include refid="commonColumns"/>
+	    <![CDATA[ from T_SQ_ACCESSORY_INFO]]>
+		<include refid="dynamicWhere"/>
+		<dynamic prepend="ORDER BY">
+			<isNotEmpty property="sortColumns">$sortColumns$</isNotEmpty>
+		</dynamic>
+    </select>
+
+    <select id="getByAccessCode" resultMap="accessoryInfoResult" parameterClass="java.util.HashMap">
+	    select <include refid="commonColumns"/>
+	    <![CDATA[ from T_SQ_ACCESSORY_INFO where ACCESS_CODE = #accessCode# and status=0]]>
+    </select>
+    
+    <select id="getByAccesName" resultMap="accessoryInfoResult" parameterClass="java.lang.String">
+	    select <include refid="commonColumns"/>
+	    <![CDATA[ from T_SQ_ACCESSORY_INFO where ACCES_NAME = #accesName# and status=0]]>
+    </select>
+    
+</sqlMap>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "sql-map-2.dtd">
+<sqlMap namespace="GameUser" dataSource="htsecDataSource">
+    <typeAlias alias="gameUser" type="cairh.community.api.game.kxian.model.GameUser"/>
+   
+    <resultMap id="gameUserResult" class="gameUser">
+        <result property="id" column="ID"/>
+        <result property="gameId" column="GAME_ID"/>
+        <result property="accountId" column="ACCOUNT_ID"/>
+        <result property="count" column="COUNT"/>
+        <result property="todayCount" column="TODAY_COUNT"/>
+        <result property="lastPlayTime" column="LAST_PLAY_TIME"/>
+    </resultMap>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="commonColumns">
+	    <![CDATA[
+        	ID ,
+        	GAME_ID ,
+        	ACCOUNT_ID ,
+        	COUNT ,
+        	TODAY_COUNT,
+        	LAST_PLAY_TIME 
+	    ]]>
+	</sql>
+	<sql id="dynamicUpdate">
+	  <dynamic prepend=" ">
+	       <isNotNull prepend="," property="gameId">
+	             GAME_ID = #gameId#
+	       </isNotNull>
+	       <isNotNull prepend="," property="accountId">
+	             ACCOUNT_ID = #accountId#
+	       </isNotNull>
+	       <isNotNull prepend="," property="todayCount">
+	             TODAY_COUNT = #todayCount#
+	       </isNotNull>
+	       <isNotNull prepend="," property="count">
+	             COUNT = #count#
+	       </isNotNull>
+	       <isNotNull prepend="," property="lastPlayTime">
+	             LAST_PLAY_TIME = #lastPlayTime#
+	       </isNotNull>
+	    </dynamic>	
+	</sql>
+	
+    <insert id="insert" parameterClass="gameUser">
+    <![CDATA[
+        INSERT INTO MA_GAME_USER (
+        	ID ,
+        	GAME_ID ,
+        	ACCOUNT_ID ,
+        	COUNT ,
+        	TODAY_COUNT,
+        	LAST_PLAY_TIME 
+        ) VALUES (
+        	#id# ,
+        	#gameId# ,
+        	#accountId# ,
+        	#count# ,
+        	#todayCount#,
+        	#lastPlayTime# 
+        )
+    ]]>
+    <!--
+    mysql:		type="post" SELECT  select last_insert_id()
+    sqlserver:	type="post" SELECT  @@identity  AS  ID
+    oracle:		type="pre" 	SELECT  sequenceName.nextval AS ID FROM DUAL
+    DB2:		type="pre"	values nextval for sequenceName
+    -->
+        <selectKey resultClass="java.lang.Long" type="pre" keyProperty="id" >
+            select GAME_USER_SEQ.nextVal  from dual
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterClass="gameUser">
+        UPDATE MA_GAME_USER SET <include refid="dynamicUpdate"/>
+	   <![CDATA[ WHERE 
+	        ID = #id# 
+    ]]>
+    </update>
+
+    <delete id="delete" parameterClass="java.lang.Long" isKey="true">
+    <![CDATA[
+        delete from MA_GAME_USER where
+        ID = #id# 
+    ]]>
+    </delete>
+    
+    <select id="getById" resultMap="gameUserResult" isKey="true">
+	    select <include refid="commonColumns"/>
+	    <![CDATA[ from MA_GAME_USER where 
+		        ID = #id# 
+	    ]]>
+    </select>
+
+	<sql id="dynamicWhere">
+	    <dynamic prepend="WHERE">
+	       <isNotEmpty prepend="AND" property="id">
+	             ID = #id#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="gameId">
+	             GAME_ID = #gameId#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="accountId">
+	             ACCOUNT_ID = #accountId#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="todayCount">
+	             TODAY_COUNT = #todayCount#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="count">
+	             COUNT = #count#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="lastPlayTime">
+	             LAST_PLAY_TIME = #lastPlayTime#
+	       </isNotEmpty>
+	    </dynamic>	
+	</sql>
+	
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 #offset#,#pageSize#,#lastRows# 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect_count" resultClass="java.lang.Integer">
+    	<![CDATA[ select count(*) from MA_GAME_USER ]]>
+		<include refid="dynamicWhere"/>    
+    </select>
+    <select id="pageSelect" resultMap="gameUserResult">
+    	select <include refid="commonColumns"/>
+	    <![CDATA[ from MA_GAME_USER]]>
+		<include refid="dynamicWhere"/>
+		<!-- <dynamic prepend="ORDER BY">
+			<isNotEmpty property="sortColumns">$sortColumns$</isNotEmpty>
+		</dynamic> -->
+    </select>
+
+	<select id="getByProperties" resultMap="gameUserResult" >
+		select <include refid="commonColumns"/>
+        <![CDATA[ from MA_GAME_USER]]>
+        <include refid="dynamicWhere"/>
+    </select>
+
+
+	<select id="getByAcc" resultMap="gameUserResult" >
+		select <include refid="commonColumns"/>
+        <![CDATA[ from MA_GAME_USER]]>
+        where account_id=#userId# and game_id=#gameKhero#
+    </select>
+    
+</sqlMap>

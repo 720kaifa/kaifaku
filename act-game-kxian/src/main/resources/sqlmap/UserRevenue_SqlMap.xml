@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "sql-map-2.dtd">
+<sqlMap namespace="UserRevenue" dataSource="htsecDataSource">
+    <typeAlias alias="userRevenue" type="cairh.community.api.game.kxian.model.UserRevenue"/>
+   
+    <resultMap id="userRevenueResult" class="userRevenue">
+        <result property="userId" column="USER_ID"/>
+        <result property="nikeName" column="NIKE_NAME"/>
+        <result property="totalRevenueRate" column="TOTAL_REVENUE_RATE"/>
+        <result property="ranking" column="RANKING"/>
+    </resultMap>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="commonColumns">
+	    <![CDATA[
+        	USER_ID ,
+        	NIKE_NAME ,
+        	TOTAL_REVENUE_RATE ,
+        	RANKING 
+	    ]]>
+	</sql>
+	<sql id="dynamicUpdate">
+	  <dynamic prepend=" ">
+	       <isNotNull prepend="," property="nikeName">
+	             NIKE_NAME = #nikeName#
+	       </isNotNull>
+	       <isNotNull prepend="," property="totalRevenueRate">
+	             TOTAL_REVENUE_RATE = #totalRevenueRate#
+	       </isNotNull>
+	       <isNotNull prepend="," property="ranking">
+	             RANKING = #ranking#
+	       </isNotNull>
+	    </dynamic>	
+	</sql>
+	
+    <insert id="insert" parameterClass="userRevenue">
+    <![CDATA[
+        INSERT INTO MA_USER_REVENUE (
+        	USER_ID ,
+        	NIKE_NAME ,
+        	TOTAL_REVENUE_RATE ,
+        	RANKING 
+        ) VALUES (
+        	#userId# ,
+        	#nikeName# ,
+        	#totalRevenueRate# ,
+        	#ranking# 
+        )
+    ]]>
+    <!--
+    mysql:		type="post" SELECT  select last_insert_id()
+    sqlserver:	type="post" SELECT  @@identity  AS  ID
+    oracle:		type="pre" 	SELECT  sequenceName.nextval AS ID FROM DUAL
+    DB2:		type="pre"	values nextval for sequenceName
+    -->
+    </insert>
+
+    <update id="update" parameterClass="userRevenue">
+        UPDATE MA_USER_REVENUE SET <include refid="dynamicUpdate"/>
+	   <![CDATA[ WHERE 
+	        USER_ID = #userId# 
+    ]]>
+    </update>
+
+    <delete id="delete" parameterClass="java.math.BigDecimal" isKey="true">
+    <![CDATA[
+        delete from MA_USER_REVENUE where
+        USER_ID = #userId# 
+    ]]>
+    </delete>
+    
+    <select id="getById" resultMap="userRevenueResult" isKey="true">
+	    select <include refid="commonColumns"/>
+	    <![CDATA[ from MA_USER_REVENUE where 
+		        USER_ID = #userId# 
+	    ]]>
+    </select>
+
+	<sql id="dynamicWhere">
+	    <dynamic prepend="WHERE">
+	       <isNotEmpty prepend="AND" property="userId">
+	             USER_ID = #userId#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="nikeName">
+	             NIKE_NAME = #nikeName#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="totalRevenueRate">
+	             TOTAL_REVENUE_RATE = #totalRevenueRate#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="ranking">
+	             RANKING = #ranking#
+	       </isNotEmpty>
+	    </dynamic>	
+	</sql>
+	
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 #offset#,#pageSize#,#lastRows# 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect_count" resultClass="java.lang.Integer">
+    	<![CDATA[ select count(*) from MA_USER_REVENUE ]]>
+		<include refid="dynamicWhere"/>    
+    </select>
+    <select id="pageSelect" resultMap="userRevenueResult">
+    	select <include refid="commonColumns"/>
+	    <![CDATA[ from MA_USER_REVENUE]]>
+		<include refid="dynamicWhere"/>
+		<!-- <dynamic prepend="ORDER BY">
+			<isNotEmpty property="sortColumns">$sortColumns$</isNotEmpty>
+		</dynamic> -->
+    </select>
+
+    <select id="rankingList" resultMap="userRevenueResult">
+	    SELECT A.*, ROWNUM RN FROM ( select
+	     <include refid="commonColumns"/>
+	    from MA_USER_REVENUE 
+	     order by TOTAL_REVENUE_RATE desc 
+		<![CDATA[  ) A  WHERE ROWNUM < #count# ]]> 
+    </select>
+    
+    <select id="getList" resultMap="userRevenueResult">
+	     select <include refid="commonColumns"/>
+	    <![CDATA[ from MA_USER_REVENUE ]]> 
+		 order by TOTAL_REVENUE_RATE desc 	    
+    </select>
+
+<!-- 	<update id="updateList" parameterClass="java.util.List">
+        UPDATE MA_USER_REVENUE SET 
+	             RANKING = 
+	    <iterate open="(" close=")" conjunction=" ">  
+            #list[].ranking#  
+        </iterate>  
+		WHERE    USER_ID =  
+		<iterate open="(" close=")" conjunction=" ">  
+            #list[].userId#  
+        </iterate> 
+    </update> -->
+	<select id="getRank" resultMap="userRevenueResult">
+	   select
+	     <include refid="commonColumns"/>
+	    from MA_USER_REVENUE 
+	    <isNotEmpty prepend=" " property="userId">
+	          where USER_ID = #userId#
+	     </isNotEmpty>
+    </select>
+</sqlMap>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "sql-map-2.dtd">
+<sqlMap namespace="UserBindingInfo" dataSource="gjzqDataSource">
+    <typeAlias alias="userBindingInfo" type="cairh.community.api.point.model.UserBindingInfo"/>
+   
+    <resultMap id="userBindingInfoResult" class="userBindingInfo">
+        <result property="bindNo" column="BIND_NO"/>
+        <result property="bindDate" column="BIND_DATE"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="accountContent" column="ACCOUNT_CONTENT"/>
+        <result property="accountType" column="ACCOUNT_TYPE"/>
+        <result property="remark" column="REMARK"/>
+    </resultMap>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="commonColumns">
+	    <![CDATA[
+        	BIND_NO ,
+        	BIND_DATE ,
+        	USER_ID ,
+        	ACCOUNT_CONTENT ,
+        	ACCOUNT_TYPE ,
+        	REMARK 
+	    ]]>
+	</sql>
+	<sql id="dynamicUpdate">
+	  <dynamic prepend=" ">
+	       <isNotNull prepend="," property="bindDate">
+	             BIND_DATE = #bindDate#
+	       </isNotNull>
+	       <isNotNull prepend="," property="userId">
+	             USER_ID = #userId#
+	       </isNotNull>
+	       <isNotNull prepend="," property="accountContent">
+	             ACCOUNT_CONTENT = #accountContent#
+	       </isNotNull>
+	       <isNotNull prepend="," property="accountType">
+	             ACCOUNT_TYPE = #accountType#
+	       </isNotNull>
+	       <isNotNull prepend="," property="remark">
+	             REMARK = #remark#
+	       </isNotNull>
+	    </dynamic>	
+	</sql>
+	
+    <insert id="insert" parameterClass="userBindingInfo">
+    <![CDATA[
+        INSERT INTO T_SQ_USER_BINDING_INFO (
+        	BIND_NO ,
+        	BIND_DATE ,
+        	USER_ID ,
+        	ACCOUNT_CONTENT ,
+        	ACCOUNT_TYPE ,
+        	REMARK 
+        ) VALUES (
+        	#bindNo# ,
+        	#bindDate# ,
+        	USER_BASE_SEQ.nextVal ,
+        	#accountContent# ,
+        	#accountType# ,
+        	#remark# 
+        )
+    ]]>
+    <!--
+    mysql:		type="post" SELECT  select last_insert_id()
+    sqlserver:	type="post" SELECT  @@identity  AS  ID
+    oracle:		type="pre" 	SELECT  sequenceName.nextval AS ID FROM DUAL
+    DB2:		type="pre"	values nextval for sequenceName
+    -->
+        <selectKey resultClass="java.lang.Long" type="pre" keyProperty="bindNo" >
+            select USER_BINDING_INFO_SEQ.nextVal  from dual
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterClass="userBindingInfo">
+        UPDATE T_SQ_USER_BINDING_INFO SET <include refid="dynamicUpdate"/>
+	   <![CDATA[ WHERE 
+	        BIND_NO = #bindNo# 
+    ]]>
+    </update>
+    
+    <update id="modifyUserId" parameterClass="java.util.HashMap">
+        UPDATE T_SQ_USER_BINDING_INFO SET 
+	             USER_ID = #afterId# WHERE   USER_ID = #beginId# 
+    </update>
+
+    <delete id="delete" parameterClass="java.lang.Long" isKey="true">
+    <![CDATA[
+        delete from T_SQ_USER_BINDING_INFO where
+        BIND_NO = #bindNo# 
+    ]]>
+    </delete>
+    
+    <select id="getById" resultMap="userBindingInfoResult" isKey="true">
+	    select <include refid="commonColumns"/>
+	    <![CDATA[ from T_SQ_USER_BINDING_INFO where 
+		        BIND_NO = #bindNo# 
+	    ]]>
+    </select>
+
+	<sql id="dynamicWhere">
+	    <dynamic prepend="WHERE">
+	       <isNotEmpty prepend="AND" property="bindNo">
+	             BIND_NO = #bindNo#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="bindDate">
+	             BIND_DATE = #bindDate#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="userId">
+	             USER_ID = #userId#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="accountContent">
+	             ACCOUNT_CONTENT = #accountContent#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="accountType">
+	             ACCOUNT_TYPE = #accountType#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="remark">
+	             REMARK = #remark#
+	       </isNotEmpty>
+	    </dynamic>	
+	</sql>
+	
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 #offset#,#pageSize#,#lastRows# 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect_count" resultClass="java.lang.Integer">
+    	<![CDATA[ select count(*) from T_SQ_USER_BINDING_INFO ]]>
+		<include refid="dynamicWhere"/>    
+    </select>
+    <select id="pageSelect" resultMap="userBindingInfoResult">
+    	select <include refid="commonColumns"/>
+	    <![CDATA[ from T_SQ_USER_BINDING_INFO]]>
+		<include refid="dynamicWhere"/>
+		<dynamic prepend="ORDER BY">
+			<isNotEmpty property="sortColumns">$sortColumns$</isNotEmpty>
+		</dynamic>
+    </select>
+
+
+	<select id="getBy" resultMap="userBindingInfoResult">
+    	select <include refid="commonColumns"/>
+	    <![CDATA[ from T_SQ_USER_BINDING_INFO]]>
+		where ACCOUNT_CONTENT=#accountValue# and ACCOUNT_TYPE=#accountType#
+    </select>
+    
+    <select id="ifBinDing" resultMap="userBindingInfoResult">
+    	select <include refid="commonColumns"/>
+	    <![CDATA[ from T_SQ_USER_BINDING_INFO]]>
+		where USER_ID=#userId# and ACCOUNT_TYPE=1
+    </select>
+    
+    <select id="getCountByUserId" resultClass="java.lang.Integer">
+    	<![CDATA[ select count(*) from T_SQ_USER_BINDING_INFO ]]>
+		where   USER_ID = #userId#
+    </select>
+</sqlMap>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+	<settings cacheModelsEnabled="true" lazyLoadingEnabled="true"
+		enhancementEnabled="false" errorTracingEnabled="true" maxSessions="64"
+		maxTransactions="20" maxRequests="128" useStatementNamespaces="true" />
+	<sqlMap  resource="sqlmap/AccessoryInfo_SqlMap.xml"></sqlMap>
+	<sqlMap  resource="sqlmap/UserPoint_SqlMap.xml"></sqlMap>
+	<sqlMap  resource="sqlmap/UserPointLog_SqlMap.xml"></sqlMap>
+	<sqlMap  resource="sqlmap/ChannelPoint_SqlMap.xml"></sqlMap>
+	<sqlMap  resource="sqlmap/UserBindingInfo_SqlMap.xml"></sqlMap>
+	<sqlMap  resource="sqlmap/UserLevel_SqlMap.xml"></sqlMap>
+</sqlMapConfig>

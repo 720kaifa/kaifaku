@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "sql-map-2.dtd">
+<sqlMap namespace="MaUserPointLog" dataSource="htsecDataSource">
+    <typeAlias alias="maUserPointLog" type="cairh.community.api.game.kxian.model.MaUserPointLog"/>
+   
+    <resultMap id="maUserPointLogResult" class="maUserPointLog">
+        <result property="id" column="ID"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="mobile" column="MOBILE"/>
+        <result property="occurPoints" column="OCCUR_POINTS"/>
+        <result property="type" column="TYPE"/>
+        <result property="gameId" column="GAME_ID"/>
+        <result property="remark" column="REMARK"/>
+        <result property="code" column="CODE"/>
+        <result property="createTime" column="CREATE_TIME"/>
+    </resultMap>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="commonColumns">
+	    <![CDATA[
+        	ID ,
+        	USER_ID ,
+        	MOBILE ,
+        	OCCUR_POINTS ,
+        	TYPE ,
+        	GAME_ID ,
+        	REMARK ,
+        	CODE ,
+        	CREATE_TIME 
+	    ]]>
+	</sql>
+	<sql id="dynamicUpdate">
+	  <dynamic prepend=" ">
+	       <isNotNull prepend="," property="userId">
+	             USER_ID = #userId#
+	       </isNotNull>
+	       <isNotNull prepend="," property="mobile">
+	             MOBILE = #mobile#
+	       </isNotNull>
+	       <isNotNull prepend="," property="occurPoints">
+	             OCCUR_POINTS = #occurPoints#
+	       </isNotNull>
+	       <isNotNull prepend="," property="type">
+	             TYPE = #type#
+	       </isNotNull>
+	       <isNotNull prepend="," property="gameId">
+	             GAME_ID = #gameId#
+	       </isNotNull>
+	       <isNotNull prepend="," property="remark">
+	             REMARK = #remark#
+	       </isNotNull>
+	       <isNotNull prepend="," property="code">
+	             CODE = #code#
+	       </isNotNull>
+	       <isNotNull prepend="," property="createTime">
+	             CREATE_TIME = #createTime#
+	       </isNotNull>
+	    </dynamic>	
+	</sql>
+	
+    <insert id="insert" parameterClass="maUserPointLog">
+    <![CDATA[
+        INSERT INTO MA_USER_POINT_LOG (
+        	ID ,
+        	USER_ID ,
+        	MOBILE ,
+        	OCCUR_POINTS ,
+        	TYPE ,
+        	GAME_ID ,
+        	REMARK ,
+        	CODE ,
+        	CREATE_TIME 
+        ) VALUES (
+        	#id# ,
+        	#userId# ,
+        	#mobile# ,
+        	#occurPoints# ,
+        	#type# ,
+        	#gameId# ,
+        	#remark# ,
+        	#code# ,
+        	#createTime# 
+        )
+    ]]>
+    <!--
+    mysql:		type="post" SELECT  select last_insert_id()
+    sqlserver:	type="post" SELECT  @@identity  AS  ID
+    oracle:		type="pre" 	SELECT  sequenceName.nextval AS ID FROM DUAL
+    DB2:		type="pre"	values nextval for sequenceName
+    -->
+        <selectKey resultClass="java.lang.Long" type="pre" keyProperty="id" >
+            select USER_POINT_LOG_SEQ.nextVal  from dual
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterClass="maUserPointLog">
+        UPDATE MA_USER_POINT_LOG SET <include refid="dynamicUpdate"/>
+	   <![CDATA[ WHERE 
+	        ID = #id# 
+    ]]>
+    </update>
+
+    <delete id="delete" parameterClass="java.lang.Long" isKey="true">
+    <![CDATA[
+        delete from MA_USER_POINT_LOG where
+        ID = #id# 
+    ]]>
+    </delete>
+    
+    <select id="getById" resultMap="maUserPointLogResult" isKey="true">
+	    select <include refid="commonColumns"/>
+	    <![CDATA[ from MA_USER_POINT_LOG where 
+		        ID = #id# 
+	    ]]>
+    </select>
+
+	<sql id="dynamicWhere">
+	    <dynamic prepend="WHERE">
+	       <isNotEmpty prepend="AND" property="id">
+	             ID = #id#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="userId">
+	             USER_ID = #userId#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="mobile">
+	             MOBILE = #mobile#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="occurPoints">
+	             OCCUR_POINTS = #occurPoints#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="type">
+	             TYPE = #type#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="gameId">
+	             GAME_ID = #gameId#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="remark">
+	             REMARK = #remark#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="code">
+	             CODE = #code#
+	       </isNotEmpty>
+	       <isNotEmpty prepend="AND" property="createTime">
+	             CREATE_TIME = #createTime#
+	       </isNotEmpty>
+	    </dynamic>	
+	</sql>
+	
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 #offset#,#pageSize#,#lastRows# 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect_count" resultClass="java.lang.Integer">
+    	<![CDATA[ select count(*) from MA_USER_POINT_LOG ]]>
+		<include refid="dynamicWhere"/>    
+    </select>
+    <select id="pageSelect" resultMap="maUserPointLogResult">
+    	select <include refid="commonColumns"/>
+	    <![CDATA[ from MA_USER_POINT_LOG]]>
+		<include refid="dynamicWhere"/>
+		<dynamic prepend="ORDER BY">
+			<isNotEmpty property="sortColumns">$sortColumns$</isNotEmpty>
+		</dynamic>
+    </select>
+
+</sqlMap>

@@ -1,0 +1,11 @@
+{
+  "error_no":"0",
+  "error_info":null,
+  "errorTimes":null,
+  "sendTimes":null,
+  "mobile":null,
+  "data":[
+    {"occurPoints":50,"afterPoints":150,"pointDefineCode":"B-01-002","remark":"首次签到","createTime":1502789558000},
+    {"occurPoints":50,"afterPoints":100,"pointDefineCode":"B-01-002","remark":"首次签到","createTime":1502789557000},
+    {"occurPoints":50,"afterPoints":50,"pointDefineCode":"B-01-002","remark":"首次签到","createTime":1502789550000}],
+    "page":{"pageSize":10,"pageNo":1,"totalItems":3,"totalPages":1}}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+						http://www.springframework.org/schema/aop
+						http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+    					http://www.springframework.org/schema/context 
+    					http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+    default-autowire="byName" default-lazy-init="false">
+      
+    <!-- 海通证券 sqlMapClient htsec -->
+    <bean id="sqlMapClient_htsec" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation">
+            <value>classpath:sql-map-config.xml</value>
+        </property>
+        <property name="dataSource" ref="htsecDataSource"/>
+    </bean>
+    <!-- 海通证券 sqlMapClientTemplate -->    
+	<bean id="sqlMapClientTemplate" class="com.ibatis.sqlmap.client.SqlMapClientTemplate">
+		<property name="sqlMapClient">
+	  		<ref local="sqlMapClient_htsec" />
+		</property>
+	</bean>
+	
+	<!-- 事务切面配置
+	<aop:config>
+		<aop:advisor pointcut="execution(* com.cairenhui.sec.base.BaseService.*(..))" advice-ref="txAdvice"/>
+		<aop:advisor pointcut="execution(* com.cairenhui.sec.service.*Service.*(..))" advice-ref="txAdvice"/>
+	</aop:config>
+	 -->
+	<!-- 通知配置 
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="remove*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="save*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="do*" propagation="REQUIRED" rollback-for="Exception"/>
+		</tx:attributes>
+	</tx:advice>
+	-->
+    <!-- component-scan自动搜索@Component , @Controller , @Service , @Repository等标注的类 -->
+	<context:component-scan base-package="cairh.**.dao"/>
+</beans>
