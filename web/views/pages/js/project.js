@@ -43,10 +43,11 @@ function  loadTable(pageSize,pageNum){
                 var oper;
                 if(project.projectstatus==1){
                     oper="<a href='javascript:void(0);' onclick='getProject("+project.id+")' class='btn btn-small simpleoa-padding8667'><i class='icon-edit simpleoa-fontsize16'></i> </a> "+
-                        "<a href='javascript:void(0);' onclick='stopProject("+project.id+")' class='btn btn-small simpleoa-padding8867'><i class='icon-ban-circle simpleoa-fontsize16'></i> </a> "+
+                        "<a href='javascript:void(0);' onclick='stopProject("+project.id+")' class='btn btn-small simpleoa-padding8867'><i class='icon-stop simpleoa-fontsize16'></i> </a> "+
                         "<a href='javascript:void(0);' onclick='delProject("+project.id+","+project.projectstatus+")' class='btn btn-small simpleoa-padding8968'><i class='icon-trash simpleoa-fontsize16'></i> </a> "
                 }else{
                     oper= "<a href='javascript:void(0);' onclick='getProject("+project.id+")' class='btn btn-small simpleoa-padding8667'><i class='icon-edit simpleoa-fontsize16'></i> </a> "+
+                        "<a href='javascript:void(0);' onclick='startProject("+project.id+")' class='btn btn-small simpleoa-padding8867'><i class='icon-play simpleoa-fontsize16'></i> </a> "+
                         "<a href='javascript:void(0);' onclick='delProject("+project.id+","+project.projectstatus+")' class='btn btn-small simpleoa-padding8968'><i class='icon-trash simpleoa-fontsize16'></i> </a> "
                 }
                 var tr="<tr><td style='text-align: center;'>"
@@ -69,7 +70,7 @@ function  loadTable(pageSize,pageNum){
                     + " </td> <td style='text-align: center;' title='"
                     + endtime+"'>"
                     + endtime
-                    + " </td><td class='action-td' style='padding: 3px;'>"
+                    + " </td><td class='action-td' style='padding: 2px 2px 2px 6px;'>"
                     + oper
                     +"</td>";
                 $(".table-striped").append(tr);
@@ -80,6 +81,29 @@ function  loadTable(pageSize,pageNum){
             alert("发生未知错误，请联系管理员！");
         }
     });
+}
+
+function startProject(id){
+    if(confirm("确定要终止项目吗？")){
+        $.ajax({
+            type:"post",
+            url:simpleUrl+"/project/stopProject.do",
+            dataType:"json",
+            data:{"id":id},
+            success:function (data) {
+                if(data.result=="success"){
+                    alert("终止成功！");
+                    getCount();
+                    loadTable(pageSize,1);
+                }else{
+                    alert("终止失败！");
+                }
+            },
+            error:function () {
+                alert("发生未知错误，请联系管理员！");
+            }
+        });
+    }
 }
 
 function stopProject(id){
@@ -104,6 +128,7 @@ function stopProject(id){
         });
     }
 }
+
 function delProject(id,status){
     if(status==1){
         alert("项目还没有终止，无法删除项目！");
@@ -131,7 +156,6 @@ function delProject(id,status){
     }
 }
 
-
 $("#cel").click(function(){
     $("#proid").val("");
     $("#projectname").val("");
@@ -141,7 +165,6 @@ $("#cel").click(function(){
     $("#up").attr("disabled","disabled");
     $("#sub").removeAttr("disabled");
 })
-
 
 function getProject(id) {
     $.ajax({

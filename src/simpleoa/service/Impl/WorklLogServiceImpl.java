@@ -112,6 +112,12 @@ public class WorklLogServiceImpl implements WorkLogService {
 
     @Override
     public int delWorklog(int id) {
-        return iWorkDao.delWorklog(id);
+        WorkLog workLog=iWorkDao.findWorklogById(id);
+        WorkTime workTime=iWorkTimeDao.findWorkTimeByUserid(workLog.getUserid(),workLog.getProjectid());
+        int result=iWorkDao.delWorklog(id);
+        if(result>0){
+            workTime.setCoworktime(workTime.getCoworktime()-workLog.getWorktime());
+        }
+        return result;
     }
 }

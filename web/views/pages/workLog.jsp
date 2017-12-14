@@ -47,7 +47,7 @@
 
     <div class="widget-header">
         <i class="icon-edit"></i>
-        <h3>添加工作日志</h3>
+        <h3 id="editworklog">添加工作日志</h3>
     </div> <!-- /widget-header -->
 
     <div class="widget-content">
@@ -56,6 +56,7 @@
                 <div class="tab-pane active">
                     <form id="edit-profile" class="form-horizontal" action="" method="post"/>
                     <fieldset>
+                        <input type="hidden" id="workid" name="workid"/>
                         <div class="control-group div-hidden">
                             <label class="control-label div-left div-width" for="jcontent">工作内容</label>
                             <div class="controls div-left">
@@ -105,6 +106,7 @@
 
                         <div class="form-actions">
                             <button type="button" class="btn btn-primary" id="sub" style="margin-left: 150px">保存</button>
+                            <button type="button" class="btn btn-primary" id="up">修改</button>
                             <button type="button" class="btn" id="cel">取消</button>
                         </div> <!-- /form-actions -->
                     </fieldset>

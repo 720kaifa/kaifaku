@@ -42,9 +42,9 @@
     </select>
 
     <update id="updateWorklog" parameterType="Worklog" >
-        update s_project set
+        update s_worklog set
         relname=#{relname},userid=#{userid},worktime=#{worktime},jcontent=#{jcontent},cdescribe=#{cdescribe},summary=#{summary},projectname=#{projectname},projectid=#{projectid},
-        projectid=#{projectid},,workdate=#{workdate},IS_DELETE=#{IS_DELETE},CREATE_USER=#{CREATE_USER},CREATE_TIME=#{CREATE_TIME},UPDATE_USER=#{UPDATE_USER},UPDATE_TIME=#{UPDATE_TIME}
+        workdate=#{workdate},IS_DELETE=#{IS_DELETE},CREATE_USER=#{CREATE_USER},CREATE_TIME=#{CREATE_TIME},UPDATE_USER=#{UPDATE_USER},UPDATE_TIME=#{UPDATE_TIME}
         where id=#{id}
     </update>
 
