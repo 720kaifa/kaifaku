@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="simpleoa.dao.IWorkDao">
+
+    <resultMap id="WorkMap" type="WorkLog">
+        <id column="id" property="id" />
+        <result column="relname" property="relname" />
+        <result column="userid" property="userid" />
+        <result column="createtime" property="createtime" />
+        <result column="worktime" property="worktime" />
+        <result column="jcontent" property="jcontent" />
+        <result column="cdescribe" property="cdescribe" />
+        <result column="summary" property="summary" />
+        <result column="projectname" property="projectname" />
+        <result column="projectid" property="projectid" />
+        <result column="workdate" property="workdate" />
+        <result column="IS_DELETE" property="IS_DELETE" />
+        <result column="CREATE_USER" property="CREATE_USER" />
+        <result column="CREATE_TIME" property="CREATE_TIME" />
+        <result column="UPDATE_USER" property="UPDATE_USER" />
+        <result column="UPDATE_TIME" property="UPDATE_TIME" />
+    </resultMap>
+
+    <select id="findAllByUserId" parameterType="int" resultMap="WorkMap">
+        select * from s_worklog where userid=#{0}  order by id desc LIMIT #{1},#{2}
+    </select>
+
+    <select id="getCount" parameterType="int" resultType="int">
+        select COUNT(*) from s_worklog where userid=#{0}
+    </select>
+    
+    <insert id="addWorklog" parameterType="WorkLog">
+        insert into s_worklog(relname,userid,worktime,jcontent,cdescribe,summary,projectname,projectid,workdate,IS_DELETE,CREATE_USER,CREATE_TIME,UPDATE_USER,UPDATE_TIME)
+        values(#{relname},#{userid},#{worktime},#{jcontent},#{cdescribe},#{summary},#{projectname},#{projectid},#{workdate},#{IS_DELETE},#{CREATE_USER},#{CREATE_TIME},#{UPDATE_USER},#{UPDATE_TIME})
+    </insert>
+
+    <select id="findWorklogById" parameterType="int" resultMap="WorkMap">
+        select * from s_worklog where id=#{id}
+    </select>
+
+    <update id="updateWorklog" parameterType="Worklog" >
+        update s_project set
+        relname=#{relname},userid=#{userid},worktime=#{worktime},jcontent=#{jcontent},cdescribe=#{cdescribe},summary=#{summary},projectname=#{projectname},projectid=#{projectid},
+        projectid=#{projectid},,workdate=#{workdate},IS_DELETE=#{IS_DELETE},CREATE_USER=#{CREATE_USER},CREATE_TIME=#{CREATE_TIME},UPDATE_USER=#{UPDATE_USER},UPDATE_TIME=#{UPDATE_TIME}
+        where id=#{id}
+    </update>
+
+    <delete id="delWorklog" parameterType="int">
+        delete from s_worklog where id=#{id}
+    </delete>
+</mapper>
