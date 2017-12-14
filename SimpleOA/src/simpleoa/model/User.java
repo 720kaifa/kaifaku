@@ -6,6 +6,7 @@ import java.util.Date;
  * Created by Luwer on 2017/11/28.
  */
 public class User {
+
     private int id;
     private String numid;
     private String relname;
@@ -20,7 +21,13 @@ public class User {
     private String email;
     private String qq;
     private String wx;
-    private Date birthday;
+    private String birthday;
+    private String IS_DELETE;//是否删除
+    private String CREATE_USER;//创建人
+    private String CREATE_TIME;//创建时间
+    private String UPDATE_USER;//更新人
+    private String UPDATE_TIME;//更新时间
+
 
     public int getId() {
         return id;
@@ -134,12 +141,52 @@ public class User {
         this.wx = wx;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+
+    public String getIS_DELETE() {
+        return IS_DELETE;
+    }
+
+    public void setIS_DELETE(String IS_DELETE) {
+        this.IS_DELETE = IS_DELETE;
+    }
+
+    public String getCREATE_USER() {
+        return CREATE_USER;
+    }
+
+    public void setCREATE_USER(String CREATE_USER) {
+        this.CREATE_USER = CREATE_USER;
+    }
+
+    public String getCREATE_TIME() {
+        return CREATE_TIME;
+    }
+
+    public void setCREATE_TIME(String CREATE_TIME) {
+        this.CREATE_TIME = CREATE_TIME;
+    }
+
+    public String getUPDATE_USER() {
+        return UPDATE_USER;
+    }
+
+    public void setUPDATE_USER(String UPDATE_USER) {
+        this.UPDATE_USER = UPDATE_USER;
+    }
+
+    public String getUPDATE_TIME() {
+        return UPDATE_TIME;
+    }
+
+    public void setUPDATE_TIME(String UPDATE_TIME) {
+        this.UPDATE_TIME = UPDATE_TIME;
     }
 
     @Override
@@ -152,14 +199,20 @@ public class User {
                 ", password='" + password + '\'' +
                 ", age=" + age +
                 ", gender=" + gender +
-                ", role=" + role +
+                ", role='" + role + '\'' +
                 ", interest='" + interest + '\'' +
-                ", mphone=" + mphone +
+                ", mphone='" + mphone + '\'' +
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
                 ", qq='" + qq + '\'' +
                 ", wx='" + wx + '\'' +
                 ", birthday=" + birthday +
+                ", IS_DELETE='" + IS_DELETE + '\'' +
+                ", CREATE_USER='" + CREATE_USER + '\'' +
+                ", CREATE_TIME='" + CREATE_TIME + '\'' +
+                ", UPDATE_USER='" + UPDATE_USER + '\'' +
+                ", UPDATE_TIME='" + UPDATE_TIME + '\'' +
                 '}';
     }
+
 }

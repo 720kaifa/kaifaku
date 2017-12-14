@@ -6,6 +6,7 @@ import simpleoa.dao.IUserDao;
 import simpleoa.model.User;
 import simpleoa.service.UserService;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -33,13 +34,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean register(User user) {
         user.setRole("Ordinaryuser");
-        if(user.getBirthday()==null){
-            Date now = new Date();
-            user.setBirthday(now);
-        }
         Calendar cal = Calendar.getInstance();
         int age=cal.get(Calendar.YEAR);
-        cal.setTime(user.getBirthday());
         age=age-cal.get(Calendar.YEAR)+1;
         user.setAge(age);
         List<User> list=userDao.findAll();
@@ -54,12 +50,55 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public int updateUser(User user) {
-        return userDao.updateUser(user);
+    public int addUser(String account, String relname,String role,String create_user) {
+       User user =new User();
+       user.setAccount(account);
+       user.setRelname(relname);
+       user.setRole(role);
+       user.setPassword("123456");
+       user.setCREATE_USER(create_user);
+       List<User> list=userDao.findAll();
+       int num= Integer.parseInt(list.get(list.size()-1).getNumid().replaceAll("SA-",""))+1;
+       if(num<10){
+           user.setNumid("SA-00"+num);
+       }
+       if(num>=10&&num<100){
+           user.setNumid("SA-0"+num);
+       }
+       if(num>=100&&num<1000){
+           user.setNumid("SA-"+num);
+       }
+       SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+       user.setCREATE_TIME(df.format(new Date()));
+       return userDao.addUser(user);
+    }
+
+    @Override
+    public int updateUser(User user,User suser) {
+        suser.setAddress(user.getAddress());
+        suser.setBirthday(user.getBirthday());
+        suser.setEmail(user.getEmail());
+        suser.setGender(user.getGender());
+        suser.setInterest(user.getInterest());
+        suser.setMphone(user.getMphone());
+        suser.setQq(user.getQq());
+        suser.setWx(user.getWx());
+        Calendar cal = Calendar.getInstance();
+        int age=cal.get(Calendar.YEAR)-Integer.parseInt(user.getBirthday().substring(0,4));
+        suser.setAge(age);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        suser.setUPDATE_TIME(df.format(new Date()));
+        suser.setUPDATE_USER(suser.getAccount());
+        return userDao.updateUser(suser);
     }
 
     @Override
     public User findUserById(int id) {
         return userDao.findUserById(id);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userDao.findAll();
     }
 }

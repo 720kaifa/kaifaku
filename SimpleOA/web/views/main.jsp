@@ -5,11 +5,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <jsp:include page="common/head.jsp"></jsp:include>
+    <jsp:include page="pages/common/head.jsp"></jsp:include>
     <title>SimpleOA</title>
 </head>
 <body>
-<jsp:include page="common/header.jsp"></jsp:include>
+<jsp:include page="pages/common/header.jsp"></jsp:include>
 
 <div id="content">
 
@@ -17,7 +17,7 @@
 
         <div class="row">
 
-                <jsp:include page="common/menu.jsp"></jsp:include>
+                <jsp:include page="pages/common/menu.jsp"></jsp:include>
 
                 <div class="span9" id="span9">
                     <jsp:include page="pages/dashbo.jsp"></jsp:include>
@@ -29,6 +29,6 @@
 
 </div> <!-- /content -->
 
-<jsp:include page="common/footer.jsp"></jsp:include>
+<jsp:include page="pages/common/footer.jsp"></jsp:include>
 </body>
 </html>

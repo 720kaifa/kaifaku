@@ -9,23 +9,8 @@
 
 <script src="<%=base + path %>/views/js/charts/bar.js"></script>
 
-<script>
-    $(document).ready(function(){
-        $.ajax({
-            type:"post",
-            url:"<%=base + path %>/main/getWorkTime.do",
-            dataType:"json",
-            success:function (data) {
-                for(var i=0;i<data.workTime.length;i++){
-                    $("#time"+i).html(data.workTime[i]);
-                }
-            },
-            error:function () {
-                alert("网络错误！");
-            }
-        });
-    });
-</script>
+<script src="<%=base + path %>/views/pages/js/dashbo.js"></script>
+
 
 <link href="<%=base + path %>/views/css/pages/dashboard.css" rel="stylesheet" />
 <h1 class="page-title">

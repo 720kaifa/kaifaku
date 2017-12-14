@@ -1,49 +1,34 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="simpleoa.dao.IUserDao">
+<mapper namespace="simpleoa.dao.ILoginDao">
 
-    <resultMap id="UserMap" type="User">
+    <resultMap id="LoginMap" type="LoginLog">
         <id column="id" property="id" />
-        <result column="numid" property="numid" />
         <result column="relname" property="relname" />
         <result column="account" property="account" />
-        <result column="password" property="password" />
-        <result column="age" property="age" />
-        <result column="gender" property="gender" />
-        <result column="role" property="role" />
-        <result column="interest" property="interest" />
-        <result column="mphone" property="mphone" />
-        <result column="address" property="address" />
-        <result column="email" property="email" />
-        <result column="qq" property="qq" />
-        <result column="wx" property="wx" />
-        <result column="birthday" property="birthday" />
+        <result column="userid" property="userid" />
+        <result column="loginip" property="loginip" />
+        <result column="logintime" property="logintime" />
+        <result column="IS_DELETE" property="IS_DELETE" />
+        <result column="CREATE_USER" property="CREATE_USER" />
+        <result column="CREATE_TIME" property="CREATE_TIME" />
+        <result column="UPDATE_USER" property="UPDATE_USER" />
+        <result column="UPDATE_TIME" property="UPDATE_TIME" />
     </resultMap>
 
-    <select id="findUserByAccount" parameterType="String" resultType="User">
-        select * from s_user where account = #{account}
+    <select id="findAll"  parameterType="int" resultMap="LoginMap">
+        select * from s_loginlog where userid=#{userid}
     </select>
 
-    <select id="findUserById" parameterType="int" resultType="User">
-        select * from s_user where id = #{id}
-    </select>
-
-    <insert id="addUser" parameterType="User">
-        insert into s_user(numid,relname,account,password,age,gender,role,interest,mphone,address,email,qq,wx,birthday)
-        values(#{numid},#{relname},#{account},#{password},#{age},#{gender},#{role},#{interest},#{mphone},#{address},#{email},#{qq},#{wx},#{birthday})
+    <insert id="addLoginLog" parameterType="LoginLog">
+        insert into s_loginlog(relname,account,userid,loginip,logintime,IS_DELETE,CREATE_USER,CREATE_TIME,UPDATE_USER,UPDATE_TIME)
+        values(#{relname},#{account},#{userid},#{loginip},#{logintime},#{IS_DELETE},#{CREATE_USER},#{CREATE_TIME},#{UPDATE_USER},#{UPDATE_TIME})
     </insert>
 
-    <select id="findAll" resultMap="UserMap">
-        select * from s_user
-    </select>
-
-    <update id="updateUser" parameterType="User" >
-        update s_user set
-        numid=#{numid},relname=#{relname},account=#{account},password=#{password},age=#{age},gender=#{gender},role=#{role},interest=#{interest},mphone=#{mphone},address=#{address},email=#{email},qq=#{qq},wx=#{wx},birthday=#{birthday}
-        where id=#{id}
-    </update>
+    <delete id="delLoginById" parameterType="int">
+        delete from s_loginlog where id=#{id}
+    </delete>
 </mapper>

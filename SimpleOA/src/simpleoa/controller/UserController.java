@@ -7,12 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import simpleoa.model.User;
+import simpleoa.service.LoginLogService;
 import simpleoa.service.UserService;
+import simpleoa.util.CusAccessObjectUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * Created by Luwer on 2017/11/28.
@@ -23,8 +27,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private LoginLogService loginLogService;
+
     @RequestMapping("/login")
-    public void login(String account,String password ,HttpSession session,HttpServletResponse response) throws IOException {
+    public void login(String account, String password , HttpSession session, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
         User user = userService.login(account, password);
@@ -32,6 +40,7 @@ public class UserController {
             if(user.getPassword().equals(password)){
                 session.setAttribute("simpleoa_user", user);
                 session.setMaxInactiveInterval(60 * 60);
+                loginLogService.addLodinLog(user, CusAccessObjectUtil.getIpAddress(request));
                 json.put("result","success");
             }else{
                 json.put("result","passworderror");
@@ -49,8 +58,58 @@ public class UserController {
         return mav;
     }
 
+    @RequestMapping("/addUser")
+    public void addUser(String account, String relname,String role,HttpServletResponse response,HttpSession session) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out=response.getWriter();
+        JSONObject json=new JSONObject();
+        User user=(User) session.getAttribute("simpleoa_user");
+        int id=userService.addUser(account,relname,role,user.getAccount());
+        if(id>0){
+            json.put("result","success");
+        }else{
+            json.put("result","error");
+        }
+        out.print(json);
+    }
+
+    @RequestMapping("/getUser")
+    public void GetUser(HttpServletResponse response,HttpSession session) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out=response.getWriter();
+        JSONObject json=new JSONObject();
+        User suser=(User) session.getAttribute("simpleoa_user");
+        User user=userService.findUserById(suser.getId());
+        json.put("user",user);
+        out.print(json);
+    }
+
+    @RequestMapping("/userList")
+    public void UserList(HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out=response.getWriter();
+        JSONObject json=new JSONObject();
+        List<User> userList=userService.findAll();
+        json.put("userList",userList);
+        out.print(json);
+    }
+
+    @RequestMapping("/updateUser")
+    public void UpdateUser(User user,HttpSession session,HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out=response.getWriter();
+        JSONObject json=new JSONObject();
+        User suser=(User) session.getAttribute("simpleoa_user");
+        int result=userService.updateUser(user,suser);
+        if(result>0){
+            json.put("result","success");
+        }else{
+            json.put("result","error");
+        }
+        out.print(json);
+    }
+
     @RequestMapping("/register")
-    @ResponseBody
     public void register(User user, HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out=response.getWriter();
@@ -66,6 +125,7 @@ public class UserController {
 
     @RequestMapping("/checkAccount")
     public void checkAccount(String account,HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
         User user = userService.login(account,"");
@@ -82,7 +142,7 @@ public class UserController {
         JSONObject json=new JSONObject();
         User user= (User) session.getAttribute("simpleoa_user");
         user.setPassword(password);
-        int num=userService.updateUser(user);
+        int num=userService.updateUser(user,user);
         if(num>0){
             json.put("result","success");
         }else{

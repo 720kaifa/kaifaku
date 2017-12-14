@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <jsp:include page="common/head.jsp"></jsp:include>
+    <jsp:include page="pages/common/head.jsp"></jsp:include>
     <title>注册</title>
     <script>
         $(document).ready(function(){
@@ -273,7 +273,7 @@
 
 </div> <!-- /content -->
 
-<jsp:include page="common/footer.jsp"></jsp:include>
+<jsp:include page="pages/common/footer.jsp"></jsp:include>
 
 </body>
 </html>

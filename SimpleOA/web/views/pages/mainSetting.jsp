@@ -3,7 +3,7 @@
 <% String base = "http://" + request.getServerName()+":"+request.getServerPort(); %>
 
 <h1 class="page-title">
-    <i class="icon-lock"></i>
+    <i class="icon-cog"></i>
     首页设置
 </h1>
 <div class="stat-container">

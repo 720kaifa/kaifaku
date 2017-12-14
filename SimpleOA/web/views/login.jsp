@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
   <link href="<%=base + path %>/views/css/pages/login.css" rel="stylesheet" />
-  <jsp:include page="common/head.jsp"></jsp:include>
+  <jsp:include page="pages/common/head.jsp"></jsp:include>
   <title>登录</title>
 
   <script>
@@ -89,7 +89,6 @@
 
     <div id="remember-me" class="pull-left">
       <p class="help-block" id="errorMessage" style="font-size: 10px!important;color: red!important;"></p>
-      <p>没有账号? <a href="<%=base+path%>/views/register.jsp">注册</a></p>
     </div>
 
     <div class="pull-right">
@@ -99,7 +98,7 @@
     </div>
   </div> <!-- /login-content -->
 </div> <!-- /login-wrapper -->
-<jsp:include page="common/footer.jsp"></jsp:include>
+<jsp:include page="pages/common/footer.jsp"></jsp:include>
 </body>
 </html>
 
