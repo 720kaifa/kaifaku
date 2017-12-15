@@ -19,11 +19,11 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService{
     @Autowired
-    private IUserDao userDao;
+    private IUserDao iUserDao;
 
     @Override
     public User login(String account,String password) {
-        User user=userDao.findUserByAccount(account);
+        User user=iUserDao.findUserByAccount(account);
         if(user!=null){
             return user;
         }else{
@@ -38,10 +38,10 @@ public class UserServiceImpl implements UserService{
         int age=cal.get(Calendar.YEAR);
         age=age-cal.get(Calendar.YEAR)+1;
         user.setAge(age);
-        List<User> list=userDao.findAll();
+        List<User> list=iUserDao.findAll();
         int num= Integer.parseInt(list.get(list.size()-1).getNumid().replaceAll("SA-",""))+1;
         user.setNumid("SA-"+num);
-        int id=userDao.addUser(user);
+        int id=iUserDao.addUser(user);
         if(id>0){
             return true;
         }else{
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService{
        user.setRole(role);
        user.setPassword("123456");
        user.setCREATE_USER(create_user);
-       List<User> list=userDao.findAll();
+       List<User> list=iUserDao.findAll();
        int num= Integer.parseInt(list.get(list.size()-1).getNumid().replaceAll("SA-",""))+1;
        if(num<10){
            user.setNumid("SA-00"+num);
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService{
        }
        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
        user.setCREATE_TIME(df.format(new Date()));
-       return userDao.addUser(user);
+       return iUserDao.addUser(user);
     }
 
     @Override
@@ -89,16 +89,16 @@ public class UserServiceImpl implements UserService{
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         suser.setUPDATE_TIME(df.format(new Date()));
         suser.setUPDATE_USER(suser.getAccount());
-        return userDao.updateUser(suser);
+        return iUserDao.updateUser(suser);
     }
 
     @Override
     public User findUserById(int id) {
-        return userDao.findUserById(id);
+        return iUserDao.findUserById(id);
     }
 
     @Override
     public List<User> findAll() {
-        return userDao.findAll();
+        return iUserDao.findAll();
     }
 }

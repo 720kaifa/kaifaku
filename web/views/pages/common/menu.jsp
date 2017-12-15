@@ -14,7 +14,7 @@
     <div class="account-details">
         <span class="account-name">${simpleoa_user.getRelname()}</span>
         <span class="account-role">${simpleoa_user.getRole()}</span>
-        <span class="account-actions"><a href="#" onclick="changeClass($('#personinf a'),'<%=base+path%>/views/pages/updateUser.jsp')">个人信息</a> | <a href="javascript:;">设置</a></span>
+        <span class="account-actions"><a href="javascript:void(0);" onclick="changeClass($('#personinf a'),'<%=base+path%>/views/pages/uploadfile.jsp')">设置头像</a> | <a href="javascript:void(0);" onclick="changeClass($('#personinf a'),'<%=base+path%>/views/pages/updateUser.jsp')">个人信息</a></span>
     </div> <!-- /account-details -->
 </div> <!-- /account-container -->
 

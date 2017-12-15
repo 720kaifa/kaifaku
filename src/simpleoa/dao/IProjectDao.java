@@ -15,4 +15,5 @@ public interface IProjectDao {
     public Project findProjectById(int id);
     public int updateProject(Project project);
     public int delProject(int id);
+    public List<Project> findLast();
 }

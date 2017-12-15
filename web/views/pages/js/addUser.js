@@ -2,7 +2,7 @@ $(document).ready(function(){
     $("#sub").attr('disabled',false);
 });
 
-$('#account').blur(function(){
+$("#account").blur(function(){
     $.ajax({
         type:"post",
         url:simpleUrl+"/user/checkAccount.do",
@@ -27,7 +27,7 @@ $("#account").focus(function(){
     $("#errorMessage").html("");
 });
 
-$('#sub').click(function () {
+$("#sub").click(function () {
     var account=$("#account").val();
     var relname=$("#relname").val();
     var role=$('input[name="role"]:checked ').val();

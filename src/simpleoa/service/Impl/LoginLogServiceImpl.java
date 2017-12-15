@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class LoginLogServiceImpl implements LoginLogService{
     @Autowired
-    private ILoginDao loginDao;
+    private ILoginDao iLoginDao;
     @Override
     public int addLodinLog(User user, String loginip) {
         LoginLog loginLog=new LoginLog();
@@ -28,10 +28,10 @@ public class LoginLogServiceImpl implements LoginLogService{
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         loginLog.setCREATE_TIME(df.format(new Date()));
         loginLog.setCREATE_USER("SYSTEM");
-        List<LoginLog> logList=loginDao.findAll(user.getId());
+        List<LoginLog> logList=iLoginDao.findAll(user.getId());
         if(logList.size()>=100){
-            loginDao.delLoginById(logList.get(0).getId());
+            iLoginDao.delLoginById(logList.get(0).getId());
         }
-        return loginDao.addLoginLog(loginLog);
+        return iLoginDao.addLoginLog(loginLog);
     }
 }

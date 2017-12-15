@@ -18,21 +18,21 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
-    private IProjectDao projectDao;
+    private IProjectDao iProjectDao;
 
     public List<Project> findAllByStatus(int projectstatus) {
-        return projectDao.findAllByStatus(projectstatus);
+        return iProjectDao.findAllByStatus(projectstatus);
     }
 
     @Override
     public List<Project> findAll(int pageSize,int pageNum) {
         int startRow = (pageNum - 1) * pageSize;
-        return projectDao.findAll(startRow,pageSize);
+        return iProjectDao.findAll(startRow,pageSize);
     }
 
     @Override
     public int getCount() {
-        return projectDao.getCount();
+        return iProjectDao.getCount();
     }
 
     @Override
@@ -41,12 +41,12 @@ public class ProjectServiceImpl implements ProjectService {
         project.setCREATE_TIME(df.format(new Date()));
         project.setProjectstatus(1);
         project.setCREATE_USER(user.getAccount());
-        return projectDao.addProject(project);
+        return iProjectDao.addProject(project);
     }
 
     @Override
     public int updateProject(Project project,User user){
-        Project pro=projectDao.findProjectById(project.getId());
+        Project pro=iProjectDao.findProjectById(project.getId());
         pro.setProjectname(project.getProjectname());
         pro.setProjectdec(project.getProjectdec());
         pro.setStarttime(project.getStarttime());
@@ -54,28 +54,37 @@ public class ProjectServiceImpl implements ProjectService {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         pro.setUPDATE_TIME(df.format(new Date()));
         pro.setUPDATE_USER(user.getAccount());
-        return projectDao.updateProject(pro);
+        return iProjectDao.updateProject(pro);
     }
 
     @Override
-    public int stopProject(int id,User user) {
-        Project project=projectDao.findProjectById(id);
-        project.setProjectstatus(2);
+    public int changeStatus(int id,User user,int status) {
+        Project project=iProjectDao.findProjectById(id);
+        project.setProjectstatus(status);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date=df.format(new Date());
         project.setUPDATE_TIME(date);
-        project.setEndtime(date.substring(0,10));
+        if(status==1){
+            project.setEndtime("");
+        }else{
+            project.setEndtime(date.substring(0,10));
+        }
         project.setUPDATE_USER(user.getAccount());
-        return projectDao.updateProject(project);
+        return iProjectDao.updateProject(project);
     }
 
     @Override
     public int delProject(int id) {
-        return projectDao.delProject(id);
+        return iProjectDao.delProject(id);
     }
 
     @Override
     public Project findProjectById(int id){
-        return projectDao.findProjectById(id);
+        return iProjectDao.findProjectById(id);
+    }
+
+    @Override
+    public List<Project> findLast(){
+        return iProjectDao.findLast();
     }
 }

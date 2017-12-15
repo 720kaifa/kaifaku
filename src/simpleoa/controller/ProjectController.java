@@ -102,7 +102,22 @@ public class ProjectController {
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
         User user=(User)session.getAttribute("simpleoa_user");
-        int result=projectService.stopProject(id,user);
+        int result=projectService.changeStatus(id,user,2);
+        if(result>0){
+            json.put("result","success");
+        }else{
+            json.put("result","error");
+        }
+        out.print(json);
+    }
+
+    @RequestMapping("/startProject")
+    public void startProject(int id,HttpSession session,HttpServletResponse response) throws IOException{
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out=response.getWriter();
+        JSONObject json=new JSONObject();
+        User user=(User)session.getAttribute("simpleoa_user");
+        int result=projectService.changeStatus(id,user,1);
         if(result>0){
             json.put("result","success");
         }else{
@@ -122,6 +137,16 @@ public class ProjectController {
         }else{
             json.put("result","error");
         }
+        out.print(json);
+    }
+
+    @RequestMapping("/getLastProject")
+    public void GetLastProject(HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out=response.getWriter();
+        JSONObject json=new JSONObject();
+        List<Project> projectList=projectService.findLast();
+        json.put("projectList",projectList);
         out.print(json);
     }
 }

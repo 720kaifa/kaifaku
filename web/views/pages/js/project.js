@@ -10,7 +10,6 @@ $(document).ready(function(){
     }
 });
 
-
 function getCount(){
     $.ajax({
         type:"post",
@@ -84,19 +83,19 @@ function  loadTable(pageSize,pageNum){
 }
 
 function startProject(id){
-    if(confirm("确定要终止项目吗？")){
+    if(confirm("确定要重启项目吗？")){
         $.ajax({
             type:"post",
-            url:simpleUrl+"/project/stopProject.do",
+            url:simpleUrl+"/project/startProject.do",
             dataType:"json",
             data:{"id":id},
             success:function (data) {
                 if(data.result=="success"){
-                    alert("终止成功！");
+                    alert("项目重启成功！");
                     getCount();
                     loadTable(pageSize,1);
                 }else{
-                    alert("终止失败！");
+                    alert("项目重启失败！");
                 }
             },
             error:function () {
