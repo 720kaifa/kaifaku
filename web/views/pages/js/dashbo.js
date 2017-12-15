@@ -22,9 +22,7 @@ $(document).ready(function(){
                     +'</div>'
                     +'<div class="plan-price">'
                     +'75<span class="term">累计工时</span>'
-                    +'</div>'
-                    +'</div>'
-                    +'<div class="plan-features">'
+                    +'</div></div><div class="plan-features">'
                     +'<ul> <li><strong>项目状态:</strong>'+status+'</li>'
                     +'<li><strong>开始时间:</strong>'+project.starttime+'</li> </ul></div>'
                     +'<div class="plan-actions"></div></div></div>';

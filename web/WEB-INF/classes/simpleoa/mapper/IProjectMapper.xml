@@ -51,4 +51,8 @@
     <delete id="delProject">
         delete from s_project where id=#{id}
     </delete>
+
+    <select id="findLast" parameterType="int" resultMap="ProjectMap">
+        select * from s_project order by id desc LIMIT 3
+    </select>
 </mapper>
