@@ -11,5 +11,7 @@
         <typeAlias type="simpleoa.model.Project" alias="Project" />
         <typeAlias type="simpleoa.model.NavMenu" alias="NavMenu" />
         <typeAlias type="simpleoa.model.WorkTime" alias="WorkTime" />
+        <typeAlias type="simpleoa.model.News" alias="News" />
+        <typeAlias type="simpleoa.model.Notice" alias="Notice" />
     </typeAliases>
 </configuration>

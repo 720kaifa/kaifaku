@@ -28,7 +28,7 @@ function addMenus() {
             }
         },
         error:function () {
-            alert("发生未知错误，请联系管理员！");
+            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
         }
     });
 }

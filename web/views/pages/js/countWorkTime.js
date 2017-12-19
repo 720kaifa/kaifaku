@@ -16,10 +16,11 @@ function getCount(){
             listCount=data.conut;
         },
         error:function () {
-            alert("发生未知错误，请联系管理员！");
+            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
         }
     });
 }
+
 function  loadTable(pageSize,pageNum){
     $.ajax({
         type:"post",
@@ -59,7 +60,7 @@ function  loadTable(pageSize,pageNum){
             $(".table-striped td").attr("class", "simpleoa-wrap");
         },
         error:function () {
-            alert("发生未知错误，请联系管理员！");
+            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
         }
     });
 }
@@ -78,7 +79,7 @@ function setProject(){
             }
         },
         error:function () {
-            alert("项目列表获取失败！");
+            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
         }
     });
 }

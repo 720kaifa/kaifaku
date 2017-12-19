@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="simpleoa.dao.INewsDao">
+
+    <resultMap id="NewsMap" type="News">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="content" property="content" />
+        <result column="istop" property="istop" />
+        <result column="IS_DELETE" property="IS_DELETE" />
+        <result column="CREATE_USER" property="CREATE_USER" />
+        <result column="CREATE_TIME" property="CREATE_TIME" />
+        <result column="UPDATE_USER" property="UPDATE_USER" />
+        <result column="UPDATE_TIME" property="UPDATE_TIME" />
+    </resultMap>
+
+    <insert id="addNews" parameterType="News">
+        insert into s_notice(title,content,istop,IS_DELETE,CREATE_USER,CREATE_TIME,UPDATE_USER,UPDATE_TIME)
+        values(#{title},#{content},#{istop},#{IS_DELETE},#{CREATE_USER},#{CREATE_TIME},#{UPDATE_USER},#{UPDATE_TIME})
+    </insert>
+
+</mapper>

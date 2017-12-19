@@ -3,6 +3,7 @@ $(document).ready(function(){
         type:"post",
         url:simpleUrl+"/project/getLastProject.do",
         dataType:"json",
+        async:false,
         success:function (data) {
             var projectList=data.projectList;
             for(var i=0;i<projectList.length;i++){
@@ -30,7 +31,7 @@ $(document).ready(function(){
             }
         },
         error:function () {
-            alert("网络错误！");
+            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
         }
     });
 });

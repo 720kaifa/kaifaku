@@ -1,9 +1,6 @@
 <% String path = request.getContextPath(); %>
 <% String base = "http://" + request.getServerName()+":"+request.getServerPort(); %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
-<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
-<META HTTP-EQUIV="Expires" CONTENT="0">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -22,6 +19,9 @@
 
 <link href="<%=base + path %>/views/css/simpleoa.css" rel="stylesheet" />
 <script src="<%=base + path %>/views/pages/js/page.js"></script>
+
+<link href="<%=base + path %>/views/css/xcConfirm.css" rel="stylesheet" />
+<script src="<%=base + path %>/views/js/xcConfirm.js"></script>
 <script>
     var simpleUrl="<%=base + path %>";
     var simpleUser={

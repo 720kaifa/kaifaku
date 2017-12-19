@@ -6,7 +6,6 @@ $(document).ready(function(){
     $("#up").attr("disabled","disabled");
 });
 
-
 function getCount(){
     $.ajax({
         type:"post",
@@ -17,7 +16,7 @@ function getCount(){
             listCount=data.conut;
         },
         error:function () {
-            alert("发生未知错误，请联系管理员！");
+            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
         }
     });
 }
@@ -61,7 +60,7 @@ function  loadTable(pageSize,pageNum){
             $(".table-striped td").attr("class", "simpleoa-wrap");
         },
         error:function () {
-            alert("发生未知错误，请联系管理员！");
+            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
         }
     });
 }
@@ -88,13 +87,13 @@ function getWorklog(id) {
             $("#sub").attr("disabled","disabled");
         },
         error:function () {
-            alert("发生未知错误，请联系管理员！");
+            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
         }
     });
 }
 
 function delWorklog(id) {
-    if(confirm("确定要删除项目吗？")){
+    window.wxc.xcConfirm("确定要删除日志吗？", window.wxc.xcConfirm.typeEnum.confirm,{onOk:function(){
         $.ajax({
             type:"post",
             url:simpleUrl+"/workLog/delWorklog.do",
@@ -102,18 +101,18 @@ function delWorklog(id) {
             data:{"id":id},
             success:function (data) {
                 if(data.result=="success"){
-                    alert("删除成功！");
+                    window.wxc.xcConfirm("日志删除成功！！！", window.wxc.xcConfirm.typeEnum.success);
                     getCount();
                     loadTable(pageSize,1);
                 }else{
-                    alert("删除失败！");
+                    window.wxc.xcConfirm("日志删除失败！！！", window.wxc.xcConfirm.typeEnum.error);
                 }
             },
             error:function () {
-                alert("发生未知错误，请联系管理员！");
+                window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
             }
         });
-    }
+    }});
 }
 
 $("#cel").click(function(){
@@ -155,42 +154,44 @@ $("#up").click(function(){
     if(workdate!=null&&workdate!=""){
         if(projectid!=0){
             if(jcontent!=null&&jcontent!=""){
-                $.ajax({
-                    type:"post",
-                    url:simpleUrl+"/workLog/updateWorklog.do",
-                    dataType:"json",
-                    data:workLog,
-                    success:function (data) {
-                        if(data.result=="success"){
-                            alert("修改日志成功！");
-                            $("#workid").val("");
-                            $("#jcontent").val("");
-                            $("#cdescribe").val("");
-                            $("#worktime").val("");
-                            $("#summary").val("");
-                            $("#projectid").val("");
-                            $("#workdate").val("");
-                            loadTable(7,1);
-                            $("#up").attr("disabled","disabled");
-                            $("#sub").removeAttr("disabled");
-                            $("#worktime").removeAttr("disabled");
-                            $("#workdate").removeAttr("disabled");
-                        }else{
-                            alert("修改日志失败，请检查你的输入！");
+                window.wxc.xcConfirm("确定要修改日志吗？", window.wxc.xcConfirm.typeEnum.confirm,{onOk:function(){
+                    $.ajax({
+                        type:"post",
+                        url:simpleUrl+"/workLog/updateWorklog.do",
+                        dataType:"json",
+                        data:workLog,
+                        success:function (data) {
+                            if(data.result=="success"){
+                                window.wxc.xcConfirm("修改日志成功！！！", window.wxc.xcConfirm.typeEnum.success);
+                                $("#workid").val("");
+                                $("#jcontent").val("");
+                                $("#cdescribe").val("");
+                                $("#worktime").val("");
+                                $("#summary").val("");
+                                $("#projectid").val("");
+                                $("#workdate").val("");
+                                loadTable(7,1);
+                                $("#up").attr("disabled","disabled");
+                                $("#sub").removeAttr("disabled");
+                                $("#worktime").removeAttr("disabled");
+                                $("#workdate").removeAttr("disabled");
+                            }else{
+                                window.wxc.xcConfirm("修改日志失败，请检查你的输入！！！", window.wxc.xcConfirm.typeEnum.error);
+                            }
+                        },
+                        error:function () {
+                            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
                         }
-                    },
-                    error:function () {
-                        alert("修改日志时发生未知错误，请联系管理员！");
-                    }
-                });
+                    });
+                }});
             }else{
-                alert("工作内容不能为空！");
+                window.wxc.xcConfirm("工作内容不能为空！！！", window.wxc.xcConfirm.typeEnum.info);
             }
         }else{
-            alert("请选择项目！");
+            window.wxc.xcConfirm("请选择项目！！！", window.wxc.xcConfirm.typeEnum.info);
         }
     }else{
-        alert("请选择日期！");
+        window.wxc.xcConfirm("请选择工作日期！！！", window.wxc.xcConfirm.typeEnum.info);
     }
 
 });
@@ -217,37 +218,39 @@ $("#sub").click(function(){
     if(workdate!=null&&workdate!=""){
         if(projectid!=0){
             if(jcontent!=null&&jcontent!=""){
-                $.ajax({
-                    type:"post",
-                    url:simpleUrl+"/workLog/addWorklog.do",
-                    dataType:"json",
-                    data:workLog,
-                    success:function (data) {
-                        if(data.result=="success"){
-                            alert("添加日志成功！");
-                            $("#jcontent").val("");
-                            $("#cdescribe").val("");
-                            $("#worktime").val("");
-                            $("#summary").val("");
-                            $("#projectid").val("");
-                            $("#workdate").val("");
-                            loadTable(7,1);
-                        }else{
-                            alert("添加日志失败，请检查你的输入！");
+                window.wxc.xcConfirm("确定要添加日志吗？", window.wxc.xcConfirm.typeEnum.confirm,{onOk:function(){
+                    $.ajax({
+                        type:"post",
+                        url:simpleUrl+"/workLog/addWorklog.do",
+                        dataType:"json",
+                        data:workLog,
+                        success:function (data) {
+                            if(data.result=="success"){
+                                window.wxc.xcConfirm("添加日志成功！！！", window.wxc.xcConfirm.typeEnum.success);
+                                $("#jcontent").val("");
+                                $("#cdescribe").val("");
+                                $("#worktime").val("");
+                                $("#summary").val("");
+                                $("#projectid").val("");
+                                $("#workdate").val("");
+                                loadTable(7,1);
+                            }else{
+                                window.wxc.xcConfirm("添加日志失败，请检查你的输入！！！", window.wxc.xcConfirm.typeEnum.error);
+                            }
+                        },
+                        error:function () {
+                            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
                         }
-                    },
-                    error:function () {
-                        alert("添加日志时发生未知错误，请联系管理员！");
-                    }
-                });
+                    });
+                }});
             }else{
-                alert("工作内容不能为空！");
+                window.wxc.xcConfirm("工作内容不能为空！！", window.wxc.xcConfirm.typeEnum.info);
             }
         }else{
-            alert("请选择项目！");
+            window.wxc.xcConfirm("请选择项！！！", window.wxc.xcConfirm.typeEnum.info);
         }
     }else{
-        alert("请选择日期！");
+        window.wxc.xcConfirm("请选择日期！！！", window.wxc.xcConfirm.typeEnum.info);
     }
 
 });
@@ -266,7 +269,7 @@ function setProject(){
             }
         },
         error:function () {
-            alert("项目列表获取失败！");
+            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
         }
     });
 }

@@ -1,4 +1,3 @@
-
 $(document).ready(function(){
     $("#errorPaasword").html("");
     $("#sub").attr('disabled','disabled');
@@ -9,24 +8,26 @@ $('#sub').click(function () {
     var newpassword=$("#password2").val();
     if((oldpassword!=null&&newpassword!=null)&&(oldpassword!=""&&newpassword!="")){
         $("#errorPaasword").html("");
-        $.ajax({
-            type:"post",
-            url:simpleUrl+"/user/changePassword.do",
-            dataType:"json",
-            data:{"password":newpassword},
-            success:function (data) {
-                if(data.result=="success"){
-                    alert("修改成功！");
-                    $("#password").val("");
-                    $("#password2").val("");
-                }else{
-                    alert("修改失败，请检查你的输入！");
+        window.wxc.xcConfirm("确定要修改密码吗？", window.wxc.xcConfirm.typeEnum.confirm,{onOk:function(){
+            $.ajax({
+                type:"post",
+                url:simpleUrl+"/user/changePassword.do",
+                dataType:"json",
+                data:{"password":newpassword},
+                success:function (data) {
+                    if(data.result=="success"){
+                        window.wxc.xcConfirm("密码修改成功！！！", window.wxc.xcConfirm.typeEnum.success);
+                        $("#password").val("");
+                        $("#password2").val("");
+                    }else{
+                        window.wxc.xcConfirm("密码修改失败，请检查你的输入！！！", window.wxc.xcConfirm.typeEnum.error);
+                    }
+                },
+                error:function () {
+                    window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
                 }
-            },
-            error:function () {
-                alert("修改密码时发生未知错误，请联系管理员！");
-            }
-        });
+            });
+        }});
     }else{
         $("#errorPaasword").html("输入不能为空！");
         $("#sub").attr('disabled','disabled');

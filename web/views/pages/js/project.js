@@ -20,7 +20,7 @@ function getCount(){
             listCount=data.conut;
         },
         error:function () {
-            alert("发生未知错误，请联系管理员！");
+            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
         }
     });
 }
@@ -77,13 +77,13 @@ function  loadTable(pageSize,pageNum){
             $(".table-striped td").attr("class", "simpleoa-wrap");
         },
         error:function () {
-            alert("发生未知错误，请联系管理员！");
+            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
         }
     });
 }
 
 function startProject(id){
-    if(confirm("确定要重启项目吗？")){
+    window.wxc.xcConfirm("确定要重启项目吗？", window.wxc.xcConfirm.typeEnum.confirm,{onOk:function(){
         $.ajax({
             type:"post",
             url:simpleUrl+"/project/startProject.do",
@@ -91,22 +91,22 @@ function startProject(id){
             data:{"id":id},
             success:function (data) {
                 if(data.result=="success"){
-                    alert("项目重启成功！");
+                    window.wxc.xcConfirm("项目重启成功！！！", window.wxc.xcConfirm.typeEnum.success);
                     getCount();
                     loadTable(pageSize,1);
                 }else{
-                    alert("项目重启失败！");
+                    window.wxc.xcConfirm("项目重启失败！！！", window.wxc.xcConfirm.typeEnum.error);
                 }
             },
             error:function () {
-                alert("发生未知错误，请联系管理员！");
+                window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
             }
         });
-    }
+    }});
 }
 
 function stopProject(id){
-    if(confirm("确定要终止项目吗？")){
+    window.wxc.xcConfirm("确定要终止项目吗？", window.wxc.xcConfirm.typeEnum.confirm,{onOk:function(){
         $.ajax({
             type:"post",
             url:simpleUrl+"/project/stopProject.do",
@@ -114,25 +114,25 @@ function stopProject(id){
             data:{"id":id},
             success:function (data) {
                 if(data.result=="success"){
-                    alert("终止成功！");
+                    window.wxc.xcConfirm("项目终止成功！！！", window.wxc.xcConfirm.typeEnum.success);
                     getCount();
                     loadTable(pageSize,1);
                 }else{
-                    alert("终止失败！");
+                    window.wxc.xcConfirm("项目终止失败！！！", window.wxc.xcConfirm.typeEnum.error);
                 }
             },
             error:function () {
-                alert("发生未知错误，请联系管理员！");
+                window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
             }
         });
-    }
+    }});
 }
 
 function delProject(id,status){
     if(status==1){
-        alert("项目还没有终止，无法删除项目！");
+        window.wxc.xcConfirm("项目还没有终止，无法删除项目！！！", window.wxc.xcConfirm.typeEnum.error);
     }else{
-        if(confirm("确定要删除项目吗？")){
+        window.wxc.xcConfirm("确定要删除项目吗？", window.wxc.xcConfirm.typeEnum.confirm,{onOk:function(){
             $.ajax({
                 type:"post",
                 url:simpleUrl+"/project/delProject.do",
@@ -140,18 +140,18 @@ function delProject(id,status){
                 data:{"id":id},
                 success:function (data) {
                     if(data.result=="success"){
-                        alert("删除成功！");
+                        window.wxc.xcConfirm("项目删除成功！！！", window.wxc.xcConfirm.typeEnum.success);
                         getCount();
                         loadTable(pageSize,1);
                     }else{
-                        alert("删除失败！");
+                        window.wxc.xcConfirm("项目删除失败！！！", window.wxc.xcConfirm.typeEnum.error);
                     }
                 },
                 error:function () {
-                    alert("发生未知错误，请联系管理员！");
+                    window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
                 }
             });
-        }
+        }});
     }
 }
 
@@ -183,7 +183,7 @@ function getProject(id) {
             $("#estimated").val(project.estimated);
         },
         error:function () {
-            alert("发生未知错误，请联系管理员！");
+            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
         }
     });
 }
@@ -204,32 +204,35 @@ $("#up").click(function(){
         "estimated":estimated,
     };
     if(projectname!=null&&projectname!=""){
-        $.ajax({
-            type:"post",
-            url:simpleUrl+"/project/updateProject.do",
-            dataType:"json",
-            data:project,
-            success:function (data) {
-                if(data.result=="success"){
-                    alert("修改项目成功！");
-                    $("#up").attr("disabled","disabled");
-                    $("#sub").removeAttr("disabled");
-                    $("#projectname").val("");
-                    $("#projectdec").val("");
-                    $("#starttime").val("");
-                    $("#estimated").val("");
-                    loadTable(7,1);
-                    $("#up").hide();
-                }else{
-                    alert("修改项目失败，请检查你的输入！");
+        window.wxc.xcConfirm("确定要修改项目吗？", window.wxc.xcConfirm.typeEnum.confirm,{onOk:function(){
+            $.ajax({
+                type:"post",
+                url:simpleUrl+"/project/updateProject.do",
+                dataType:"json",
+                data:project,
+                success:function (data) {
+                    if(data.result=="success"){
+                        window.wxc.xcConfirm("项目修改成功！！！", window.wxc.xcConfirm.typeEnum.success);
+                        $("#up").attr("disabled","disabled");
+                        $("#sub").removeAttr("disabled");
+                        $("#projectname").val("");
+                        $("#projectdec").val("");
+                        $("#starttime").val("");
+                        $("#estimated").val("");
+                        loadTable(7,1);
+                        $("#up").hide();
+                    }else{
+                        window.wxc.xcConfirm("项目修改失败，请检查你的输入！！！", window.wxc.xcConfirm.typeEnum.error);
+                    }
+                },
+                error:function () {
+                    window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
                 }
-            },
-            error:function () {
-                alert("修改项目时发生未知错误，请联系管理员！");
-            }
-        });
+            });
+        }});
+
     }else{
-        alert("项目名称不能为空！");
+        window.wxc.xcConfirm("项目名称不能为空！！！", window.wxc.xcConfirm.typeEnum.info);
     }
 });
 
@@ -246,28 +249,30 @@ $("#sub").click(function(){
         "estimated":estimated,
     };
     if(projectname!=null&&projectname!=""){
-        $.ajax({
-            type:"post",
-            url:simpleUrl+"/project/addProject.do",
-            dataType:"json",
-            data:project,
-            success:function (data) {
-                if(data.result=="success"){
-                    alert("添加项目成功！");
-                    $("#projectname").val("");
-                    $("#projectdec").val("");
-                    $("#starttime").val("");
-                    $("#estimated").val("");
-                    loadTable(7,1);
-                }else{
-                    alert("添加项目失败，请检查你的输入！");
+        window.wxc.xcConfirm("确定要添加项目吗？", window.wxc.xcConfirm.typeEnum.confirm,{onOk:function(){
+            $.ajax({
+                type:"post",
+                url:simpleUrl+"/project/addProject.do",
+                dataType:"json",
+                data:project,
+                success:function (data) {
+                    if(data.result=="success"){
+                        window.wxc.xcConfirm("项目添加成功！！！", window.wxc.xcConfirm.typeEnum.success);
+                        $("#projectname").val("");
+                        $("#projectdec").val("");
+                        $("#starttime").val("");
+                        $("#estimated").val("");
+                        loadTable(7,1);
+                    }else{
+                        window.wxc.xcConfirm("项目添加失败，请检查你的输入！！！", window.wxc.xcConfirm.typeEnum.error);
+                    }
+                },
+                error:function () {
+                    window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
                 }
-            },
-            error:function () {
-                alert("添加项目时发生未知错误，请联系管理员！");
-            }
-        });
+            });
+        }});
     }else{
-        alert("项目名称不能为空！");
+        window.wxc.xcConfirm("项目名称不能为空！！！", window.wxc.xcConfirm.typeEnum.info);
     }
 });

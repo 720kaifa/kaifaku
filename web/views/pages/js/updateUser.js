@@ -34,27 +34,29 @@ $("#sub").click(function() {
         "wx":$("#wx").val(),
         "interest":$("#interest").val()
     };
-    $.ajax({
-        type:"post",
-        url:simpleUrl+"/user/updateUser.do",
-        dataType:"json",
-        data:user,
-        success:function (data) {
-            if(data.result=="success"){
-                getUser();
-                $("#cha").removeAttr("disabled");
-                $("#cel").attr("disabled","disabled");
-                $("#sub").attr("disabled","disabled");
-                $(".controls input").attr("disabled","disabled");
-                alert("保存成功！");
-            }else{
-                alert("保存失败！");
+    window.wxc.xcConfirm("确定要修改个人信息吗？", window.wxc.xcConfirm.typeEnum.confirm,{onOk:function(){
+        $.ajax({
+            type:"post",
+            url:simpleUrl+"/user/updateUser.do",
+            dataType:"json",
+            data:user,
+            success:function (data) {
+                if(data.result=="success"){
+                    getUser();
+                    $("#cha").removeAttr("disabled");
+                    $("#cel").attr("disabled","disabled");
+                    $("#sub").attr("disabled","disabled");
+                    $(".controls input").attr("disabled","disabled");
+                    window.wxc.xcConfirm("个人信息保存成功！！！", window.wxc.xcConfirm.typeEnum.success);
+                }else{
+                    window.wxc.xcConfirm("个人信息保存失败！！！", window.wxc.xcConfirm.typeEnum.error);
+                }
+            },
+            error:function () {
+                window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
             }
-        },
-        error:function () {
-            alert("发生未知错误，请联系管理员！");
-        }
-    });
+        });
+    }});
 });
 
 function getUser(){
@@ -76,7 +78,7 @@ function getUser(){
             $("#interest").val(user.interest);
         },
         error:function () {
-            alert("发生未知错误，请联系管理员！");
+            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
         }
     });
 }

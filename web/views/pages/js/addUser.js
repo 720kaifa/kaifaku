@@ -18,7 +18,7 @@ $("#account").blur(function(){
             }
         },
         error:function () {
-            alert("网络错误！");
+            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
         }
     });
 });
@@ -33,24 +33,26 @@ $("#sub").click(function () {
     var role=$('input[name="role"]:checked ').val();
 
     if(account!=null&&account!=""){
-        $.ajax({
-            type:"post",
-            url:simpleUrl+"/user/addUser.do",
-            dataType:"json",
-            data:{"account":account, "relname":relname,"role":role},
-            success:function (data) {
-                if(data.result=="success"){
-                    alert("添加用户成功！");
-                    $("#account").val("");
-                    $("#relname").val("");
-                }else{
-                    alert("添加用户失败，请检查你的输入！");
+        window.wxc.xcConfirm("确定要添加用户吗？", window.wxc.xcConfirm.typeEnum.confirm,{onOk:function(){
+            $.ajax({
+                type:"post",
+                url:simpleUrl+"/user/addUser.do",
+                dataType:"json",
+                data:{"account":account, "relname":relname,"role":role},
+                success:function (data) {
+                    if(data.result=="success"){
+                        window.wxc.xcConfirm("添加用户成功！！！", window.wxc.xcConfirm.typeEnum.success);
+                        $("#account").val("");
+                        $("#relname").val("");
+                    }else{
+                        window.wxc.xcConfirm("添加用户失败，请检查你的输入！！！", window.wxc.xcConfirm.typeEnum.error);
+                    }
+                },
+                error:function () {
+                    window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
                 }
-            },
-            error:function () {
-                alert("添加用户时发生未知错误，请联系管理员！");
-            }
-        });
+            });
+        }});
     }else{
         $("#errorMessage").html("系统登录名不能为空！");
         $("#sub").attr('disabled',true);
