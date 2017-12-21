@@ -9,6 +9,7 @@
         <id column="id" property="id" />
         <result column="title" property="title" />
         <result column="content" property="content" />
+        <result column="relname" property="relname" />
         <result column="istop" property="istop" />
         <result column="IS_DELETE" property="IS_DELETE" />
         <result column="CREATE_USER" property="CREATE_USER" />
@@ -18,8 +19,17 @@
     </resultMap>
 
     <insert id="addNews" parameterType="News">
-        insert into s_notice(title,content,istop,IS_DELETE,CREATE_USER,CREATE_TIME,UPDATE_USER,UPDATE_TIME)
-        values(#{title},#{content},#{istop},#{IS_DELETE},#{CREATE_USER},#{CREATE_TIME},#{UPDATE_USER},#{UPDATE_TIME})
+        insert into s_news(title,content,relneme,istop,IS_DELETE,CREATE_USER,CREATE_TIME,UPDATE_USER,UPDATE_TIME)
+        values(#{title},#{content},#{relneme},#{istop},#{IS_DELETE},#{CREATE_USER},#{CREATE_TIME},#{UPDATE_USER},#{UPDATE_TIME})
     </insert>
+
+    <select id="findAllNews" parameterType="int" resultMap="NewsMap">
+        select * from s_news  order by id desc LIMIT #{startRow},#{pageSize}
+    </select>
+
+    <select id="getCount" parameterType="int" resultType="int">
+        select COUNT(*) from s_news
+    </select>
+
 
 </mapper>

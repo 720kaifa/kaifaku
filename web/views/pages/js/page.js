@@ -17,7 +17,7 @@ function changePage(uid,id,lis){
         if(id==0){
             pageNum=$(lis).parent().parent().find(".active").find("a").text();
             if(pageNum==1){
-                alert("已经是第一页！！")
+                window.wxc.xcConfirm("已经是第一页！！！", window.wxc.xcConfirm.typeEnum.info);
             }else{
                 $(lis).parent().parent().find(".active").removeClass("active");
                 pageNum--;
@@ -31,7 +31,7 @@ function changePage(uid,id,lis){
         if(id==-1){
             pageNum=$(lis).parent().parent().find(".active").find("a").text();
             if(pageNum==liCount){
-                alert("已经是最后一页！！")
+                window.wxc.xcConfirm("已经是最后一页！！！！", window.wxc.xcConfirm.typeEnum.info);
             }else{
                 $(lis).parent().parent().find(".active").removeClass("active");
                 pageNum++;

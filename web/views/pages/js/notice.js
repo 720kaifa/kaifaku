@@ -1,10 +1,9 @@
 $(document).ready(function(){
-    //getCount();
-    //loadTable(pageSize,1);
+    getCount();
+    loadTable(pageSize,1);
     setPage(1,"simpleoapage_notice");
     $("#up").attr("disabled","disabled");
 });
-
 
 function getCount(){
     $.ajax({
@@ -24,47 +23,35 @@ function getCount(){
 function  loadTable(pageSize,pageNum){
     $.ajax({
         type:"post",
-        url:simpleUrl+"/notice/notice.do?number=Math.random()",
+        url:simpleUrl+"/notice/noticeList.do?number=Math.random()",
         dataType:"json",
         async: false,
         data:{"pageSize":pageSize,"pageNum":pageNum},
         success:function (data) {
             $(".table-striped tbody").html("");
-            for(var i=0;i<data.projectList.length;i++){
-                var project=data.projectList[i];
+            for(var i=0;i<data.noticeList.length;i++){
+                var notice=data.noticeList[i];
                 var num=i+1;
-                var projectstatus=(project.projectstatus==1)?"进行中":"已结束";
-                var endtime=(project.endtime==null)?"":project.endtime;
-                var oper;
-                if(project.projectstatus==1){
-                    oper="<a href='javascript:void(0);' onclick='getProject("+project.id+")' class='btn btn-small simpleoa-padding8667'><i class='icon-edit simpleoa-fontsize16'></i> </a> "+
-                        "<a href='javascript:void(0);' onclick='stopProject("+project.id+")' class='btn btn-small simpleoa-padding8867'><i class='icon-stop simpleoa-fontsize16'></i> </a> "+
-                        "<a href='javascript:void(0);' onclick='delProject("+project.id+","+project.projectstatus+")' class='btn btn-small simpleoa-padding8968'><i class='icon-trash simpleoa-fontsize16'></i> </a> "
-                }else{
-                    oper= "<a href='javascript:void(0);' onclick='getProject("+project.id+")' class='btn btn-small simpleoa-padding8667'><i class='icon-edit simpleoa-fontsize16'></i> </a> "+
-                        "<a href='javascript:void(0);' onclick='startProject("+project.id+")' class='btn btn-small simpleoa-padding8867'><i class='icon-play simpleoa-fontsize16'></i> </a> "+
-                        "<a href='javascript:void(0);' onclick='delProject("+project.id+","+project.projectstatus+")' class='btn btn-small simpleoa-padding8968'><i class='icon-trash simpleoa-fontsize16'></i> </a> "
-                }
+                var istop=(notice.istop==1)?"是":"否";
+                var oper="<a href='javascript:void(0);' onclick='getNotice("+notice.id+")' class='btn btn-small simpleoa-padding8667'><i class='icon-edit simpleoa-fontsize16'></i> </a> "+
+                        "<a href='javascript:void(0);' onclick='delNotice("+notice.id+")' class='btn btn-small simpleoa-padding8968'><i class='icon-trash simpleoa-fontsize16'></i> </a> "
                 var tr="<tr><td style='text-align: center;'>"
                     + num
                     + " </td> <td style='text-align: center;' title='"
-                    + project.projectname+"'>"
-                    + project.projectname
+                    + notice.title+"'>"
+                    + notice.title
                     + " </td> <td style='text-align: center;' title='"
-                    + project.projectdec+"'>"
-                    + project.projectdec
+                    + notice.content+"'>"
+                    + notice.content
                     + " </td> <td style='text-align: center;' title='"
-                    + project.starttime+"'>"
-                    + project.starttime
+                    + istop+"'>"
+                    + istop
                     + " </td> <td style='text-align: center;' title='"
-                    + project.estimated+"'>"
-                    + project.estimated
+                    + notice.CREATE_TIME+"'>"
+                    + notice.CREATE_TIME
                     + " </td> <td style='text-align: center;' title='"
-                    + projectstatus+"'>"
-                    + projectstatus
-                    + " </td> <td style='text-align: center;' title='"
-                    + endtime+"'>"
-                    + endtime
+                    + notice.CREATE_USER+"'>"
+                    + notice.CREATE_USER
                     + " </td><td class='action-td' style='padding: 2px 2px 2px 6px;'>"
                     + oper
                     +"</td>";

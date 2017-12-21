@@ -25,6 +25,7 @@ public class NewsServiceImpl implements NewsService {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         news.setCREATE_TIME(df.format(new Date()));
         news.setCREATE_USER(user.getAccount());
+        news.setRelname(user.getRelname());
         return iNewsDao.addNews(news);
     }
 }

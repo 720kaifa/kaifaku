@@ -9,6 +9,7 @@ import simpleoa.service.NoticeService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Luwer on 2017/12/19.
@@ -24,6 +25,18 @@ public class NoticeServiceImpl implements NoticeService{
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         notice.setCREATE_TIME(df.format(new Date()));
         notice.setCREATE_USER(user.getAccount());
+        notice.setRelname(user.getRelname());
         return iNoticeDao.addNotice(notice);
+    }
+
+    @Override
+    public List<Notice> findAllNotice(int pageSize,int pageNum) {
+        int startRow = (pageNum - 1) * pageSize;
+        return iNoticeDao.findAllNotice(startRow,pageSize);
+    }
+
+    @Override
+    public int getCount() {
+        return iNoticeDao.getCount();
     }
 }

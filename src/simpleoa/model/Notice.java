@@ -7,12 +7,14 @@ public class Notice {
     private int id;
     private String title;
     private String content;
+    private String relname;
     private int istop;//1为置顶，2为不置顶
     private String IS_DELETE;//是否删除
     private String CREATE_USER;//创建人
     private String CREATE_TIME;//创建时间
     private String UPDATE_USER;//更新人
     private String UPDATE_TIME;//更新时间
+
 
     public int getId() {
         return id;
@@ -36,6 +38,14 @@ public class Notice {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getRelname() {
+        return relname;
+    }
+
+    public void setRelname(String relname) {
+        this.relname = relname;
     }
 
     public int getIstop() {
@@ -92,6 +102,7 @@ public class Notice {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
+                ", relname='" + relname + '\'' +
                 ", istop=" + istop +
                 ", IS_DELETE='" + IS_DELETE + '\'' +
                 ", CREATE_USER='" + CREATE_USER + '\'' +
@@ -100,4 +111,5 @@ public class Notice {
                 ", UPDATE_TIME='" + UPDATE_TIME + '\'' +
                 '}';
     }
+
 }
