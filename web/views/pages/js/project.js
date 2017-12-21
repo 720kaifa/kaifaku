@@ -220,7 +220,6 @@ $("#up").click(function(){
                         $("#starttime").val("");
                         $("#estimated").val("");
                         loadTable(7,1);
-                        $("#up").hide();
                     }else{
                         window.wxc.xcConfirm("项目修改失败，请检查你的输入！！！", window.wxc.xcConfirm.typeEnum.error);
                     }

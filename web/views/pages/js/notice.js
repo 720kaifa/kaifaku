@@ -65,12 +65,102 @@ function  loadTable(pageSize,pageNum){
     });
 }
 
+function delNotice(id) {
+    window.wxc.xcConfirm("确定要删除公告吗？", window.wxc.xcConfirm.typeEnum.confirm,{onOk:function(){
+        $.ajax({
+            type:"post",
+            url:simpleUrl+"/notice/delNotice.do",
+            dataType:"json",
+            data:{"id":id},
+            success:function (data) {
+                if(data.result){
+                    window.wxc.xcConfirm("公告删除成功！！！", window.wxc.xcConfirm.typeEnum.success);
+                    getCount();
+                    loadTable(pageSize,1);
+                }else{
+                    window.wxc.xcConfirm("公告删除失败！！！", window.wxc.xcConfirm.typeEnum.error);
+                }
+            },
+            error:function () {
+                window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
+            }
+        });
+    }})
+}
+
+function getNotice(id) {
+    $.ajax({
+        type:"post",
+        url:simpleUrl+"/notice/getNotice.do",
+        dataType:"json",
+        data:{"id":id},
+        success:function (data) {
+            var notice=data.notice;
+            $("#editnotice").html("修改公告");
+            $("#up").removeAttr("disabled");
+            $("#sub").attr("disabled","disabled");
+            $("#noticeid").val(notice.id);
+            $("#title").val(notice.title);
+            $("#ncontent").val(notice.content);
+            $("input:checkbox[value='"+notice.istop+"']").attr('checked','true');
+        },
+        error:function () {
+            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
+        }
+    });
+}
+
 $("#cel").click(function(){
     $("#noticeid").val("");
     $("#title").val("");
     $("#ncontent").val("");
     $("#istop").attr("checked", false);
 })
+
+//update
+$("#up").click(function(){
+    var id=$("#noticeid").val();
+    var title=$("#title").val();
+    var ncontent=$("#ncontent").val();
+    var istop=$("input[name='istop']:checked").val();
+
+    var notice={
+        "id":id,
+        "title":title,
+        "content":ncontent,
+        "istop":istop,
+    };
+    if(title!=null&&title!=""){
+        window.wxc.xcConfirm("确定要修改公告吗？", window.wxc.xcConfirm.typeEnum.confirm,{onOk:function(){
+            $.ajax({
+                type:"post",
+                url:simpleUrl+"/notice/updateNotice.do",
+                dataType:"json",
+                data:notice,
+                success:function (data) {
+                    if(data.result=="success"){
+                        window.wxc.xcConfirm("公告修改成功！！！", window.wxc.xcConfirm.typeEnum.success);
+                        $("#up").attr("disabled","disabled");
+                        $("#sub").removeAttr("disabled");
+                        $("#noticeid").val("");
+                        $("#title").val("");
+                        $("#ncontent").val("");
+                        $("#istop").attr("checked", false);
+                        loadTable(7,1);
+                    }else{
+                        window.wxc.xcConfirm("公告修改失败，请检查你的输入！！！", window.wxc.xcConfirm.typeEnum.error);
+                    }
+                },
+                error:function () {
+                    window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
+                }
+            });
+        }});
+
+    }else{
+        window.wxc.xcConfirm("公告标题不能为空！！！", window.wxc.xcConfirm.typeEnum.info);
+    }
+});
 
 $("#sub").click(function(){
     var title=$("#title").val();
@@ -100,7 +190,7 @@ $("#sub").click(function(){
                         $("#title").val("");
                         $("#ncontent").val("");
                         $("#istop").attr("checked", false);
-                        //loadTable(7,1);
+                        loadTable(7,1);
                     }else{
                         window.wxc.xcConfirm("公告添加失败，请检查你的输入！！！", window.wxc.xcConfirm.typeEnum.error);
                     }
@@ -114,3 +204,4 @@ $("#sub").click(function(){
         window.wxc.xcConfirm("公告标题不能为空！！！", window.wxc.xcConfirm.typeEnum.info);
     }
 });
+

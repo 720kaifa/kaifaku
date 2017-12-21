@@ -30,4 +30,27 @@
     <select id="getCount" parameterType="int" resultType="int">
         select COUNT(*) from s_notice
     </select>
+
+    <select id="findNoticeByIstop" parameterType="int" resultType="Notice">
+        select * from s_notice  where istop=#{istop}
+    </select>
+
+    <select id="findNoticeById" parameterType="int" resultType="Notice">
+        select * from s_notice where id=#{id}
+    </select>
+
+    <delete id="delNotice" parameterType="int">
+        delete from s_notice where id=#{id}
+    </delete>
+
+    <update id="updateNotice" parameterType="Notice">
+        update s_notice set
+            title=#{title},content=#{content},relname=#{relname},istop=#{istop},
+        IS_DELETE=#{IS_DELETE},CREATE_USER=#{CREATE_USER},CREATE_TIME=#{CREATE_TIME},UPDATE_USER=#{UPDATE_USER},UPDATE_TIME=#{UPDATE_TIME}
+        where id=#{id}
+    </update>
+
+    <select id="findLastNotice" resultType="NoticeMap">
+        select * from s_notice order by id desc LIMIT 2
+    </select>
 </mapper>

@@ -47,7 +47,7 @@
 
     <div class="widget-header">
         <i class="icon-edit"></i>
-        <h3 id="editproject">添加公告</h3>
+        <h3 id="editnotice">添加公告</h3>
     </div> <!-- /widget-header -->
 
     <div class="widget-content">

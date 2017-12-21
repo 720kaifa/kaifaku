@@ -19,8 +19,8 @@
     </resultMap>
 
     <insert id="addNews" parameterType="News">
-        insert into s_news(title,content,relneme,istop,IS_DELETE,CREATE_USER,CREATE_TIME,UPDATE_USER,UPDATE_TIME)
-        values(#{title},#{content},#{relneme},#{istop},#{IS_DELETE},#{CREATE_USER},#{CREATE_TIME},#{UPDATE_USER},#{UPDATE_TIME})
+        insert into s_news(title,content,relname,istop,IS_DELETE,CREATE_USER,CREATE_TIME,UPDATE_USER,UPDATE_TIME)
+        values(#{title},#{content},#{relname},#{istop},#{IS_DELETE},#{CREATE_USER},#{CREATE_TIME},#{UPDATE_USER},#{UPDATE_TIME})
     </insert>
 
     <select id="findAllNews" parameterType="int" resultMap="NewsMap">
@@ -31,5 +31,27 @@
         select COUNT(*) from s_news
     </select>
 
+    <select id="findNewsByIstop" parameterType="int" resultType="News">
+        select * from s_news  where istop=#{istop}
+    </select>
+
+    <select id="findNewsById" parameterType="int" resultType="News">
+        select * from s_news where id=#{id}
+    </select>
+
+    <delete id="delNews" parameterType="int">
+        delete from s_news where id=#{id}
+    </delete>
+
+    <update id="updateNews" parameterType="News">
+        update s_news set
+        title=#{title},content=#{content},relname=#{relname},istop=#{istop},
+        IS_DELETE=#{IS_DELETE},CREATE_USER=#{CREATE_USER},CREATE_TIME=#{CREATE_TIME},UPDATE_USER=#{UPDATE_USER},UPDATE_TIME=#{UPDATE_TIME}
+        where id=#{id}
+    </update>
+
+    <select id="findLastNews" resultType="NewsMap">
+        select * from s_news order by id desc LIMIT 2
+    </select>
 
 </mapper>

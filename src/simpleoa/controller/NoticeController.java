@@ -60,4 +60,57 @@ public class NoticeController {
         json.put("conut",conut);
         out.print(json);
     }
+
+    @RequestMapping("/getNotice")
+    public void getNotice(int id,HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out=response.getWriter();
+        JSONObject json=new JSONObject();
+        Notice notice =noticeService.findNoticeById(id);
+        json.put("notice",notice);
+        out.print(json);
+    }
+
+    @RequestMapping("/updateNotice")
+    public void updateNotice(Notice notice, HttpSession session,HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out=response.getWriter();
+        JSONObject json=new JSONObject();
+        User user=(User)session.getAttribute("simpleoa_user");
+        int result=noticeService.updateNotice(notice,user);
+        if(result>0){
+            json.put("result","success");
+        }else{
+            json.put("result","error");
+        }
+        out.print(json);
+    }
+
+    @RequestMapping("/delNotice")
+    public void delNotice(int id,HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out=response.getWriter();
+        JSONObject json=new JSONObject();
+        int result=noticeService.delNotice(id);
+        if(result>0){
+            json.put("result","success");
+        }else{
+            json.put("result","error");
+        }
+        out.print(json);
+    }
+
+    @RequestMapping("/getNotice")
+    public void getNotice(HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out=response.getWriter();
+        JSONObject json=new JSONObject();
+        Notice notice=noticeService.getNotice();
+        if(notice!=null){
+            json.put("notice",notice);
+        }else{
+            json.put("notice","errorNull");
+        }
+    }
+
 }

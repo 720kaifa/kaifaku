@@ -34,4 +34,40 @@ $(document).ready(function(){
             window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
         }
     });
+
+    $.ajax({
+        type:"post",
+        url:simpleUrl+"/notice/getNotice.do",
+        dataType:"json",
+        async:false,
+        success:function (data) {
+            var notice=data.notice
+            var div='<p  style="text-align:  center;font-size: 15px;margin-bottom: 0px;padding-bottom: 0px"><strong>'
+                +notice.title+'</strong></p>' +
+                '<p  style="text-align:  center ;font-size: 10px;margin-top: 0px;padding-top: 0px">'+notice.CREATE_TIME+'</p>' +
+                '<p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'+notice.content+'</p><p  style="text-align:right">'+notice.relname+'</p>';
+            $("#notice").append(div);
+        },
+        error:function () {
+            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
+        }
+    });
+
+    $.ajax({
+        type:"post",
+        url:simpleUrl+"/news/getNews.do",
+        dataType:"json",
+        async:false,
+        success:function (data) {
+            var news=data.news
+            var div='<p  style="text-align:  center;font-size: 15px;margin-bottom: 0px;padding-bottom: 0px"><strong>'
+                +news.title+'</strong></p>' +
+                '<p  style="text-align:  center ;font-size: 10px;margin-top: 0px;padding-top: 0px">'+news.CREATE_TIME+'</p>' +
+                '<p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'+news.content+'</p><p  style="text-align:right">'+news.relname+'</p>';
+            $("#news").append(div);
+        },
+        error:function () {
+            window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
+        }
+    });
 });

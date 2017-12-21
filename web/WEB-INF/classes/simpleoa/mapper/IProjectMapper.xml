@@ -48,7 +48,7 @@
         where id=#{id}
     </update>
 
-    <delete id="delProject">
+    <delete id="delProject" parameterType="int">
         delete from s_project where id=#{id}
     </delete>
 
