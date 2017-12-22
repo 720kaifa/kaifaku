@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="simpleoa.dao.INewsDao">
+
+    <resultMap id="NewsMap" type="News">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="content" property="content" />
+        <result column="relname" property="relname" />
+        <result column="istop" property="istop" />
+        <result column="IS_DELETE" property="IS_DELETE" />
+        <result column="CREATE_USER" property="CREATE_USER" />
+        <result column="CREATE_TIME" property="CREATE_TIME" />
+        <result column="UPDATE_USER" property="UPDATE_USER" />
+        <result column="UPDATE_TIME" property="UPDATE_TIME" />
+    </resultMap>
+
+    <insert id="addNews" parameterType="News">
+        insert into s_news(title,content,relname,istop,IS_DELETE,CREATE_USER,CREATE_TIME,UPDATE_USER,UPDATE_TIME)
+        values(#{title},#{content},#{relname},#{istop},#{IS_DELETE},#{CREATE_USER},#{CREATE_TIME},#{UPDATE_USER},#{UPDATE_TIME})
+    </insert>
+
+    <select id="findAllNews" parameterType="int" resultMap="NewsMap">
+        select * from s_news  order by id desc LIMIT #{startRow},#{pageSize}
+    </select>
+
+    <select id="getCount" parameterType="int" resultType="int">
+        select COUNT(*) from s_news
+    </select>
+
+    <select id="findNewsByIstop" parameterType="int" resultType="News">
+        select * from s_news  where istop=#{istop}
+    </select>
+
+    <select id="findNewsById" parameterType="int" resultType="News">
+        select * from s_news where id=#{id}
+    </select>
+
+    <delete id="delNews" parameterType="int">
+        delete from s_news where id=#{id}
+    </delete>
+
+    <update id="updateNews" parameterType="News">
+        update s_news set
+        title=#{title},content=#{content},relname=#{relname},istop=#{istop},
+        IS_DELETE=#{IS_DELETE},CREATE_USER=#{CREATE_USER},CREATE_TIME=#{CREATE_TIME},UPDATE_USER=#{UPDATE_USER},UPDATE_TIME=#{UPDATE_TIME}
+        where id=#{id}
+    </update>
+
+    <select id="findLastNews" resultMap="NewsMap">
+        select * from s_news order by id desc LIMIT 2
+    </select>
+
+</mapper>
