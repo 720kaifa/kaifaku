@@ -37,16 +37,23 @@ $(document).ready(function(){
 
     $.ajax({
         type:"post",
-        url:simpleUrl+"/notice/getNotice.do",
+        url:simpleUrl+"/notice/getLastNotice.do",
         dataType:"json",
         async:false,
         success:function (data) {
+            $("#vnotice").empty();
             var notice=data.notice
-            var div='<p  style="text-align:  center;font-size: 15px;margin-bottom: 0px;padding-bottom: 0px"><strong>'
-                +notice.title+'</strong></p>' +
-                '<p  style="text-align:  center ;font-size: 10px;margin-top: 0px;padding-top: 0px">'+notice.CREATE_TIME+'</p>' +
-                '<p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'+notice.content+'</p><p  style="text-align:right">'+notice.relname+'</p>';
-            $("#notice").append(div);
+            var div;
+            if(notice=="errorNull"){
+                div='<p  style="text-align:  center;font-size: 15px;margin-bottom: 0px;padding-bottom: 0px"><strong>'
+                    +'暂无数据！'+'</strong></p>'
+            }else {
+                div='<p  style="text-align:  center;font-size: 15px;margin-bottom: 0px;padding-bottom: 0px"><strong>'
+                    +notice.title+'</strong></p>' +
+                    '<p  style="text-align:  center ;font-size: 10px;margin-top: 0px;padding-top: 0px">'+notice.CREATE_TIME+'</p>' +
+                    '<p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'+notice.content+'</p><p  style="text-align:right">'+notice.relname+'</p>';
+            }
+            $("#vnotice").append(div);
         },
         error:function () {
             window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);
@@ -55,16 +62,23 @@ $(document).ready(function(){
 
     $.ajax({
         type:"post",
-        url:simpleUrl+"/news/getNews.do",
+        url:simpleUrl+"/news/getLastNews.do",
         dataType:"json",
         async:false,
         success:function (data) {
+            $("#vnews").empty();
             var news=data.news
-            var div='<p  style="text-align:  center;font-size: 15px;margin-bottom: 0px;padding-bottom: 0px"><strong>'
-                +news.title+'</strong></p>' +
-                '<p  style="text-align:  center ;font-size: 10px;margin-top: 0px;padding-top: 0px">'+news.CREATE_TIME+'</p>' +
-                '<p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'+news.content+'</p><p  style="text-align:right">'+news.relname+'</p>';
-            $("#news").append(div);
+            var div;
+            if(news=="errorNull"){
+                div='<p  style="text-align:  center;font-size: 15px;margin-bottom: 0px;padding-bottom: 0px"><strong>'
+                    +'暂无数据！'+'</strong></p>'
+            }else {
+                div='<p  style="text-align:  center;font-size: 15px;margin-bottom: 0px;padding-bottom: 0px"><strong>'
+                    +news.title+'</strong></p>' +
+                    '<p  style="text-align:  center ;font-size: 10px;margin-top: 0px;padding-top: 0px">'+news.CREATE_TIME+'</p>' +
+                    '<p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'+news.content+'</p><p  style="text-align:right">'+news.relname+'</p>';
+            }
+            $("#vnews").append(div);
         },
         error:function () {
             window.wxc.xcConfirm("发生未知错误，请联系管理员！！！", window.wxc.xcConfirm.typeEnum.warning);

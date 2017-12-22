@@ -100,17 +100,18 @@ public class NoticeController {
         out.print(json);
     }
 
-    @RequestMapping("/getNotice")
-    public void getNotice(HttpServletResponse response) throws IOException {
+    @RequestMapping("/getLastNotice")
+    public void getLastNotice(HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
-        Notice notice=noticeService.getNotice();
+        Notice notice=noticeService.getLastNotice();
         if(notice!=null){
             json.put("notice",notice);
         }else{
             json.put("notice","errorNull");
         }
+        out.print(json);
     }
 
 }

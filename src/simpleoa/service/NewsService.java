@@ -15,5 +15,5 @@ public interface NewsService {
     public News findNewsById(int id);
     public int updateNews(News news,User user);
     public int delNews(int id);
-    public News getNews();
+    public News getLastNews();
 }

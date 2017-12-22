@@ -78,11 +78,15 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public News getNews() {
+    public News getLastNews() {
         News news=iNewsDao.findNewsByIstop(1);
         if(news==null){
             List<News> list=iNewsDao.findLastNews();
-            news=list.get(0);
+            if(list.size()>0){
+                news=list.get(0);
+            }else{
+                news=null;
+            }
         }
         return news;
     }

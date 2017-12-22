@@ -77,14 +77,17 @@ public class NoticeServiceImpl implements NoticeService{
     }
 
     @Override
-    public Notice getNotice() {
+    public Notice getLastNotice() {
         Notice notice=iNoticeDao.findNoticeByIstop(1);
         if(notice==null){
             List<Notice> list=iNoticeDao.findLastNotice();
-            notice=list.get(0);
+            if(list.size()>0){
+                notice=list.get(0);
+            }else{
+                notice=null;
+            }
         }
         return notice;
     }
-
 
 }

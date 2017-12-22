@@ -100,12 +100,12 @@ public class NewsController {
         out.print(json);
     }
 
-    @RequestMapping("/getNews")
-    public void getNews(HttpServletResponse response) throws IOException {
+    @RequestMapping("/getLastNews")
+    public void getLastNews(HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
-        News news =newsService.getNews();
+        News news =newsService.getLastNews();
         if(news!=null){
             json.put("news",news);
         }else{

@@ -39,7 +39,7 @@
                 <h3>最新通知</h3>
             </div> <!-- /widget-header -->
 
-            <div class="widget-content" id="notice">
+            <div class="widget-content" id="vnotice" style="padding-top:5px">
 
             </div> <!-- /widget-content -->
 
@@ -51,10 +51,10 @@
 
         <div class="widget">
 
-            <div class="widget-header" id="news">
+            <div class="widget-header">
                 <h3>最新新闻</h3>
             </div> <!-- /widget-header -->
-            <div class="widget-content">
+            <div class="widget-content" id="vnews" style="padding-top:5px">
 
             </div> <!-- /widget-content -->
 

@@ -50,7 +50,7 @@
         where id=#{id}
     </update>
 
-    <select id="findLastNews" resultType="NewsMap">
+    <select id="findLastNews" resultMap="NewsMap">
         select * from s_news order by id desc LIMIT 2
     </select>
 

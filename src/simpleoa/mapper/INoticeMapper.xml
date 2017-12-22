@@ -50,7 +50,7 @@
         where id=#{id}
     </update>
 
-    <select id="findLastNotice" resultType="NoticeMap">
+    <select id="findLastNotice" resultMap="NoticeMap">
         select * from s_notice order by id desc LIMIT 2
     </select>
 </mapper>

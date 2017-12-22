@@ -15,5 +15,5 @@ public interface NoticeService {
     public Notice findNoticeById(int id);
     public int updateNotice(Notice notice,User user);
     public int delNotice(int id);
-    public Notice getNotice();
+    public Notice getLastNotice();
 }
