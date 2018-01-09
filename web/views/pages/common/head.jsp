@@ -4,6 +4,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
+<link type="image/x-icon" rel="shortcut icon" href="<%=base + path %>/views/img/favicon.ico" />
 
 <link href="<%=base + path %>/views/css/bootstrap.min.css" rel="stylesheet" />
 <link href="<%=base + path %>/views/css/bootstrap-responsive.min.css" rel="stylesheet" />

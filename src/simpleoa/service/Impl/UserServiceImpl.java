@@ -70,6 +70,11 @@ public class UserServiceImpl implements UserService{
        }
        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
        user.setCREATE_TIME(df.format(new Date()));
+       if(role=="AdminUser"){
+           user.setMenuids("1,2,3,4,6,7,8,9,10");
+       }else{
+           user.setMenuids("1,2,3,4,7,8");
+       }
        return iUserDao.addUser(user);
     }
 

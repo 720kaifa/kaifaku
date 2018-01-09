@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface INavDao {
     public List<NavMenu> findAllByAut(int authority);
+
+    public NavMenu findMenuById(int id);
 }

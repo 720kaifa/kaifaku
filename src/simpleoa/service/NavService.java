@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface NavService {
     public List<NavMenu> findAllByAut(User user);
+    public List<NavMenu> findAllById(User user);
 }

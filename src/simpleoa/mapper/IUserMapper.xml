@@ -21,6 +21,7 @@
         <result column="qq" property="qq" />
         <result column="wx" property="wx" />
         <result column="birthday" property="birthday" />
+        <result column="menuids" property="menuids" />
         <result column="IS_DELETE" property="IS_DELETE" />
         <result column="CREATE_USER" property="CREATE_USER" />
         <result column="CREATE_TIME" property="CREATE_TIME" />
@@ -37,8 +38,8 @@
     </select>
 
     <insert id="addUser" parameterType="User">
-        insert into s_user(numid,relname,account,password,age,gender,role,interest,mphone,address,email,qq,wx,birthday,IS_DELETE,CREATE_USER,CREATE_TIME,UPDATE_USER,UPDATE_TIME)
-                values(#{numid},#{relname},#{account},#{password},#{age},#{gender},#{role},#{interest},#{mphone},#{address},#{email},#{qq},#{wx},#{birthday},#{IS_DELETE},#{CREATE_USER},#{CREATE_TIME},#{UPDATE_USER},#{UPDATE_TIME})
+        insert into s_user(numid,relname,account,password,age,gender,role,interest,mphone,address,email,qq,wx,birthday,menuids,IS_DELETE,CREATE_USER,CREATE_TIME,UPDATE_USER,UPDATE_TIME)
+                values(#{numid},#{relname},#{account},#{password},#{age},#{gender},#{role},#{interest},#{mphone},#{address},#{email},#{qq},#{wx},#{birthday},#{menuids},#{IS_DELETE},#{CREATE_USER},#{CREATE_TIME},#{UPDATE_USER},#{UPDATE_TIME})
     </insert>
 
     <select id="findAll" resultMap="UserMap">
@@ -47,7 +48,7 @@
 
     <update id="updateUser" parameterType="User" >
         update s_user set
-        numid=#{numid},relname=#{relname},account=#{account},password=#{password},age=#{age},gender=#{gender},role=#{role},interest=#{interest},mphone=#{mphone},address=#{address},email=#{email},qq=#{qq},wx=#{wx},birthday=#{birthday},
+        numid=#{numid},relname=#{relname},account=#{account},password=#{password},age=#{age},gender=#{gender},role=#{role},interest=#{interest},mphone=#{mphone},address=#{address},email=#{email},qq=#{qq},wx=#{wx},birthday=#{birthday},menuids=#{menuids},
         IS_DELETE=#{IS_DELETE},CREATE_USER=#{CREATE_USER},CREATE_TIME=#{CREATE_TIME},UPDATE_USER=#{UPDATE_USER},UPDATE_TIME=#{UPDATE_TIME}
         where id=#{id}
     </update>

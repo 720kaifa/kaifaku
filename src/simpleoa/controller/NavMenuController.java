@@ -31,7 +31,7 @@ public class NavMenuController {
         PrintWriter out=response.getWriter();
         JSONObject json=new JSONObject();
         User user=(User)session.getAttribute("simpleoa_user");
-        List<NavMenu> menuList=navService.findAllByAut(user);
+        List<NavMenu> menuList=navService.findAllById(user);
         json.put("menuList",menuList);
         out.print(json);
     }

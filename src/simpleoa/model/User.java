@@ -1,6 +1,5 @@
 package simpleoa.model;
 
-import java.util.Date;
 
 /**
  * Created by Luwer on 2017/11/28.
@@ -22,6 +21,7 @@ public class User {
     private String qq;
     private String wx;
     private String birthday;
+    private String menuids;
     private String IS_DELETE;//是否删除
     private String CREATE_USER;//创建人
     private String CREATE_TIME;//创建时间
@@ -149,6 +149,14 @@ public class User {
         this.birthday = birthday;
     }
 
+    public String getMenuids() {
+        return menuids;
+    }
+
+    public void setMenuids(String menuids) {
+        this.menuids = menuids;
+    }
+
     public String getIS_DELETE() {
         return IS_DELETE;
     }
@@ -189,6 +197,7 @@ public class User {
         this.UPDATE_TIME = UPDATE_TIME;
     }
 
+
     @Override
     public String toString() {
         return "User{" +
@@ -206,7 +215,8 @@ public class User {
                 ", email='" + email + '\'' +
                 ", qq='" + qq + '\'' +
                 ", wx='" + wx + '\'' +
-                ", birthday=" + birthday +
+                ", birthday='" + birthday + '\'' +
+                ", menuid='" + menuids + '\'' +
                 ", IS_DELETE='" + IS_DELETE + '\'' +
                 ", CREATE_USER='" + CREATE_USER + '\'' +
                 ", CREATE_TIME='" + CREATE_TIME + '\'' +

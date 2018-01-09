@@ -23,4 +23,8 @@
     <select id="findAllByAut" parameterType="int" resultMap="NavMap">
         select * from s_menu where authority>=#{0} order by sort
     </select>
+
+    <select id="findMenuById" parameterType="int" resultType="NavMenu">
+        select * from s_menu where id=#{id}
+    </select>
 </mapper>
